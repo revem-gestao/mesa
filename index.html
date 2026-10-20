@@ -306,12 +306,16 @@ const ATALHOS=[
 const $=s=>document.querySelector(s);
 function el(t,a={},kids=[]){const n=document.createElement(t);for(const k in a){if(k==="class")n.className=a[k];else if(k==="text")n.textContent=a[k];else n.setAttribute(k,a[k])}kids.forEach(c=>n.append(c));return n}
 function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k));localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
-let tt=null;function aviso(txt){const t=$("#toast");t.textContent=txt;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,3500)}
-function abrirTudo(links){links.forEach(l=>window.open(l[1],"_blank"))}
+let tt=null;function aviso(txt,ms){const t=$("#toast");t.textContent=txt;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,ms||3500)}
+function abrirTudo(links){
+  let bloqueadas=0;
+  links.forEach(l=>{const w=window.open(l[1],"_blank");if(!w)bloqueadas++});
+  if(bloqueadas)aviso("O Chrome bloqueou "+bloqueadas+" aba(s). Clique no ícone de pop-up bloqueado, no canto direito da barra de endereço, e escolha “Sempre permitir” para este site. Depois clique de novo.",14000);
+}
 
 /* topo */
 const now=new Date(),h=now.getHours();
-$("#hello").textContent=(h<12?"Bom dia":h<18?"Boa tarde":"Boa noite")+", Maressa";
+function saudar(){const hh=new Date().getHours();$("#hello").textContent=(hh<12?"Bom dia":hh<18?"Boa tarde":"Boa noite")+", Maressa"}saudar();
 $("#date").textContent=now.toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"});
 const hoje=now.toLocaleDateString("sv-SE");
 
@@ -345,7 +349,7 @@ function detalhe(painel,chave,item,abrir){
 }
 
 /* guias: botão grande = abrir tudo. A lista embutida acima funciona sozinha; se SHEET_CSV estiver preenchido, a planilha manda. */
-const SHEET_CSV="";   /* endereço da planilha publicada como CSV (vazio = usa a lista embutida) */
+const SHEET_CSV="https://docs.google.com/spreadsheets/d/e/2PACX-1vRlPGo45MMaqhajmK41UMGTJwHqzj2MFvBUj5RiVMkM-ueNgkOOGk23Xe4tExqAy163fmvwthvxR_nv/pub?gid=173541380&single=true&output=csv";   /* planilha "Mesa Révem · Links", publicada como CSV */
 const COR=["#e4dccb","#e6c8b6","#d5e3ec","#cfcdc4","#dcd2c0"];
 function renderModes(lista){
   $("#modes").replaceChildren();const dm=$("#det-modo");dm.hidden=true;dm.dataset.aberto="";
@@ -379,8 +383,16 @@ function modosDaPlanilha(rows){
   });
   return [...mapa.values()].map(m=>({name:m.name,tag:m.tag,links:m.links.sort((a,b)=>a[2]-b[2]).map(l=>[l[0],l[1]])}));
 }
-renderModes(MODES);
-if(SHEET_CSV){fetch(SHEET_CSV).then(r=>r.text()).then(t=>{const m=modosDaPlanilha(csvParse(t));if(m.length)renderModes(m)}).catch(()=>{})}
+const guiasGuardadas=store("mesa.guias");
+renderModes(guiasGuardadas&&guiasGuardadas.length?guiasGuardadas:MODES);
+function carregarPlanilha(){
+  if(!SHEET_CSV)return;
+  fetch(SHEET_CSV,{cache:"no-store"}).then(r=>r.text()).then(t=>{
+    const m=modosDaPlanilha(csvParse(t));
+    if(m.length&&JSON.stringify(m)!==JSON.stringify(store("mesa.guias"))){store("mesa.guias",m);renderModes(m)}
+  }).catch(()=>{});
+}
+carregarPlanilha();setInterval(carregarPlanilha,600000);
 
 /* intenções (compactas) */
 let foco=store("mesa.foco");
@@ -478,6 +490,7 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
   let ciclos=dia&&dia.dia===hoje?dia.n:0,mode="foco",left=CFG.foco*60,endAt=null,timer=null;
   const nomes={foco:"Foco",pausa:"Pausa",longa:"Pausa longa"};
   function render(){
+    window.mesaOcupada=!!timer;
     $("#clock").textContent=fmt(left);$("#clock").classList.toggle("pausa",mode!=="foco");
     document.querySelectorAll("#pm .pill").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.m===mode)));
     $("#go").textContent=timer?"Pausar":"Iniciar";
@@ -531,6 +544,12 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
 })();
 
 
+
+/* virada de dia: se a aba ficou aberta e o dia mudou, recarrega (só quando o cronômetro está parado) */
+const diaAtual=()=>new Date().toLocaleDateString("sv-SE");
+function conferirDia(){saudar();if(diaAtual()!==hoje&&!window.mesaOcupada)location.reload()}
+setInterval(conferirDia,60000);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)conferirDia()});
 </script>
 </body>
 </html>
