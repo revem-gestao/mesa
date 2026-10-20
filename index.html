@@ -178,6 +178,23 @@ footer p{margin:0;max-width:64ch}
 .q-by{flex:none;width:100%}
 @media (max-width:900px){.hero{grid-template-columns:auto 1fr}.quote{grid-column:1/-1}}
 @media (max-width:520px){.hero{grid-template-columns:1fr;justify-items:start}.moldura-foto{width:min(100%,300px)}.retrato{align-items:flex-start}}
+
+[hidden]{display:none!important}
+.sub.com-tools::after{display:none}
+.cli-tools{margin-left:auto}
+.cli-tools label.link{cursor:pointer}
+.linha-btn{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.editor{max-width:780px}
+.ed-lista{display:flex;flex-direction:column;gap:8px}
+.ed-row{display:grid;grid-template-columns:120px 1fr 30px auto;gap:8px;align-items:center}
+.ed-row input[type=text],.ed-nome{border:0;border-bottom:1px solid var(--linha-forte);background:transparent;padding:6px 2px;width:100%;min-width:0}
+.ed-nome{font-family:var(--serif);font-size:26px}
+.ed-row input:focus,.ed-nome:focus{outline:none;border-bottom-color:var(--terracota)}
+.ed-rot{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--cinza);font-weight:500}
+.star{border:0;background:none;font-size:20px;line-height:1;color:var(--terracota);padding:2px}
+.x{border:0;background:none;color:var(--cinza);font-size:18px;padding:2px 6px}
+.modo{display:flex;align-items:center;gap:8px}
+@media (max-width:640px){.ed-row{grid-template-columns:90px 1fr 30px auto}}
 </style>
 </head>
 <body>
@@ -204,10 +221,18 @@ footer p{margin:0;max-width:64ch}
 
   <nav class="atalhos" aria-label="Atalhos do dia" id="atalhos"></nav>
 
-  <section aria-labelledby="h-comecar">
+  <section aria-labelledby="h-comecar" id="sec-guias">
     <p class="label" id="h-comecar">Começar por aqui</p>
     <div class="tiles" id="modes"></div>
     <div class="detalhe" id="det-modo" hidden></div>
+  </section>
+
+  <section aria-labelledby="h-cli" id="sec-cli">
+    <div class="sub com-tools"><p class="label" id="h-cli">Clientes</p>
+      <span class="cli-tools small"><button type="button" class="link" id="cli-baixar">Baixar cópia</button> · <label class="link" for="cli-rest">Restaurar cópia</label><input type="file" id="cli-rest" accept=".json,application/json" hidden></span></div>
+    <div class="frames" id="frames"></div>
+    <div class="detalhe" id="det-cli" hidden></div>
+    <div class="detalhe editor" id="ed-cli" hidden></div>
   </section>
 
   <section class="hoje" aria-label="Hoje">
@@ -252,6 +277,7 @@ footer p{margin:0;max-width:64ch}
 
   <footer>
     <p>Esta página guarda só links, nunca senhas. Se "Abrir tudo" abrir só uma aba, libere pop-ups para este site no Chrome. Cronômetro, água e música funcionam com esta aba aberta (fixe a aba).</p>
+    <label class="small modo"><input type="checkbox" id="modo-cli"> Este perfil é de uma cliente (esconde as guias gerais)</label>
     <a class="ghost" href="https://docs.google.com/spreadsheets/d/1Ei9Fi3dOQBsdPhO2PPP_qkusf_cSBkk6OJme0QzeAmA/edit" target="_blank" rel="noopener" id="edit">Editar meus links</a>
   </footer>
 </div>
@@ -544,6 +570,132 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
 })();
 
 
+
+/* ---------- clientes: ficam só neste navegador (nunca no GitHub nem na planilha publicada) ---------- */
+(function(){
+  const SUG=["Drive","Agenda","Notion","Trello","Gmail"];
+  const CORES=["#e6c8b6","#d5e3ec","#e4dccb","#dcd2c0","#cfcdc4"];
+  let clientes=store("mesa.clientes")||[];
+  const salvar=()=>store("mesa.clientes",clientes);
+  const novoId=()=>"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  const frames=$("#frames"),det=$("#det-cli"),ed=$("#ed-cli");
+  let aberto=null;
+
+  function paraAbrir(c){const est=c.links.filter(l=>l.s);return (est.length?est:c.links.slice(0,5)).map(l=>[l.n,l.u])}
+  function abrir(c){
+    const l=paraAbrir(c);
+    if(!l.length){aviso("Esta cliente ainda não tem links. Clique em “ver links” e depois em “Editar”.");return}
+    abrirTudo(l);
+  }
+
+  function desenhar(){
+    frames.replaceChildren();
+    clientes.forEach(c=>{
+      const main=el("button",{type:"button",class:"moldura","aria-label":"Abrir tudo de "+c.name},[el("span",{class:"passe",text:(c.name[0]||"?").toUpperCase()})]);
+      main.onclick=()=>abrir(c);
+      const ver=el("button",{type:"button",class:"tile-links",text:"ver links"});
+      ver.onclick=()=>mostrar(c);
+      frames.append(el("div",{class:"frame",style:"--cor:"+c.cor},[main,el("span",{class:"nome",text:c.name}),ver]));
+    });
+    const nova=el("button",{type:"button",class:"moldura","aria-label":"Nova cliente"},[el("span",{class:"passe",text:"+"})]);
+    nova.onclick=()=>editar(null);
+    frames.append(el("div",{class:"frame nova"},[nova,el("span",{class:"nome",text:"Nova cliente"})]));
+  }
+
+  function mostrar(c){
+    ed.hidden=true;
+    if(aberto===c.id&&!det.hidden){det.hidden=true;aberto=null;return}
+    aberto=c.id;det.replaceChildren();det.hidden=false;
+    const ul=el("ul");
+    c.links.forEach(l=>ul.append(el("li",{},[el("a",{href:l.u,target:"_blank",rel:"noopener",text:(l.s?"★ ":"")+l.n})])));
+    if(!c.links.length)ul.append(el("li",{},[el("span",{class:"small",text:"Nenhum link ainda."})]));
+    const b=el("button",{class:"btn",type:"button",text:"Abrir tudo de "+c.name});b.onclick=()=>abrir(c);
+    const e=el("button",{class:"btn sec",type:"button",text:"Editar"});e.onclick=()=>editar(c);
+    det.append(el("h3",{text:c.name}),el("p",{class:"small",text:"★ = abre no “Abrir tudo”. Os outros ficam só nesta lista."}),ul,el("div",{class:"linha-btn"},[b,e]));
+  }
+
+  function editar(c){
+    det.hidden=true;aberto=null;ed.replaceChildren();ed.hidden=false;
+    const nome=el("input",{type:"text",class:"ed-nome",placeholder:"Nome da cliente","aria-label":"Nome da cliente"});nome.value=c?c.name:"";
+    const linhas=[];
+    function linha(rotulo,fixo,l){
+      const n=fixo?el("span",{class:"ed-rot",text:rotulo}):el("input",{type:"text",placeholder:"Nome do link","aria-label":"Nome do link"});
+      if(!fixo)n.value=l?l.n:"";
+      const u=el("input",{type:"text",placeholder:"https://…","aria-label":"Endereço"+(rotulo?" de "+rotulo:" do link")});u.value=l?l.u:"";
+      const st=el("button",{type:"button",class:"star",title:"★ abre no “Abrir tudo”","aria-label":"Abrir no “Abrir tudo”"});
+      let on=l?!!l.s:fixo;
+      const pinta=()=>{st.textContent=on?"★":"☆";st.setAttribute("aria-pressed",String(on))};pinta();
+      st.onclick=()=>{on=!on;pinta()};
+      const row=el("div",{class:"ed-row"},[n,u,st]);
+      const obj={fixo,rotulo,n,u,row,estrela:()=>on};
+      if(!fixo){const x=el("button",{type:"button",class:"x",text:"×","aria-label":"Remover link"});x.onclick=()=>{row.remove();linhas.splice(linhas.indexOf(obj),1)};row.append(x)}
+      linhas.push(obj);return row;
+    }
+    const box=el("div",{class:"ed-lista"});
+    SUG.forEach(sg=>{const ex=c&&c.links.find(l=>l.n.toLowerCase()===sg.toLowerCase());box.append(linha(sg,true,ex))});
+    if(c)c.links.filter(l=>!SUG.some(sg=>sg.toLowerCase()===l.n.toLowerCase())).forEach(l=>box.append(linha("",false,l)));
+    const mais=el("button",{type:"button",class:"link",text:"+ Adicionar link"});mais.onclick=()=>box.append(linha("",false,null));
+    const salvarB=el("button",{class:"btn",type:"button",text:"Salvar"});
+    const cancelar=el("button",{class:"btn sec",type:"button",text:"Cancelar"});cancelar.onclick=()=>{ed.hidden=true};
+    salvarB.onclick=()=>{
+      const nm=nome.value.trim();
+      if(!nm){aviso("Escreva o nome da cliente.");nome.focus();return}
+      const links=[];
+      for(const L of linhas){
+        const url=L.u.value.trim(),rot=L.fixo?L.rotulo:L.n.value.trim();
+        if(!url&&!rot)continue;
+        if(!url){if(L.fixo)continue;aviso("Falta o endereço do link “"+rot+"”.");L.u.focus();return}
+        if(!rot){aviso("Falta o nome de um dos links.");L.n.focus();return}
+        const ok=urlOk(/^[a-z][a-z0-9+.-]*:/i.test(url)?url:"https://"+url);
+        if(!ok){aviso("O endereço de “"+rot+"” não parece um link válido.");L.u.focus();return}
+        links.push({n:rot.slice(0,80),u:ok,s:L.estrela()});
+      }
+      if(c){c.name=nm.slice(0,60);c.links=links}
+      else clientes.push({id:novoId(),name:nm.slice(0,60),cor:CORES[clientes.length%CORES.length],links});
+      salvar();desenhar();ed.hidden=true;aviso(c?"Cliente atualizada.":"Cliente criada.");
+    };
+    const botoes=[salvarB,cancelar];
+    if(c){
+      const ap=el("button",{class:"link",type:"button",text:"Apagar esta cliente"});
+      ap.onclick=()=>{
+        if(!confirm("Apagar “"+c.name+"” deste navegador? Os links dela se perdem, a menos que você tenha uma cópia."))return;
+        clientes=clientes.filter(x=>x!==c);salvar();desenhar();ed.hidden=true;
+      };
+      botoes.push(ap);
+    }
+    ed.append(el("h3",{text:c?"Editar "+c.name:"Nova cliente"}),
+      el("p",{class:"small",text:"Preencha só o que ela usa. ★ = abre no “Abrir tudo” (se nenhum tiver estrela, abrem os 5 primeiros). Estes dados ficam só neste navegador."}),
+      nome,box,mais,el("div",{class:"linha-btn"},botoes));
+    nome.focus();
+  }
+
+  /* cópia de segurança */
+  $("#cli-baixar").onclick=()=>{
+    const blob=new Blob([JSON.stringify({versao:1,clientes},null,2)],{type:"application/json"});
+    const a=el("a",{href:URL.createObjectURL(blob),download:"clientes-mesa-revem.json"});document.body.append(a);a.click();a.remove();
+  };
+  $("#cli-rest").onchange=e=>{
+    const f=e.target.files[0];e.target.value="";if(!f)return;
+    f.text().then(t=>{
+      let d;try{d=JSON.parse(t)}catch(x){aviso("Este arquivo não é uma cópia válida.");return}
+      const lista=Array.isArray(d)?d:d&&d.clientes;
+      if(!Array.isArray(lista)){aviso("Este arquivo não é uma cópia válida.");return}
+      const limpo=lista.slice(0,100).filter(x=>x&&typeof x.name==="string"&&x.name.trim()).map((x,i)=>({
+        id:novoId(),name:x.name.trim().slice(0,60),cor:CORES.includes(x.cor)?x.cor:CORES[i%CORES.length],
+        links:(Array.isArray(x.links)?x.links:[]).slice(0,60).map(l=>({n:String(l&&l.n||"").trim().slice(0,80),u:urlOk(l&&l.u||""),s:!!(l&&l.s)})).filter(l=>l.n&&l.u)
+      }));
+      if(!limpo.length){aviso("A cópia não tem nenhuma cliente.");return}
+      if(!confirm("Isto substitui as "+clientes.length+" cliente(s) deste navegador por "+limpo.length+" da cópia. Continuar?"))return;
+      clientes=limpo;salvar();desenhar();det.hidden=true;ed.hidden=true;aviso("Cópia restaurada.");
+    });
+  };
+
+  /* modo "perfil de cliente": esconde as guias gerais e os atalhos pessoais */
+  const cb=$("#modo-cli");let modo=store("mesa.modoCliente")===true;
+  function aplicarModo(){$("#atalhos").hidden=modo;$("#sec-guias").hidden=modo;$("#edit").hidden=modo;cb.checked=modo}
+  cb.onchange=()=>{modo=cb.checked;store("mesa.modoCliente",modo);aplicarModo()};
+  aplicarModo();desenhar();
+})();
 
 /* virada de dia: se a aba ficou aberta e o dia mudou, recarrega (só quando o cronômetro está parado) */
 const diaAtual=()=>new Date().toLocaleDateString("sv-SE");
