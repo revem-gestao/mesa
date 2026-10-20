@@ -215,6 +215,32 @@ footer p{margin:0;max-width:64ch}
 .dias{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
 .dia{border:1px solid var(--linha-forte);background:transparent;padding:3px 9px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:500}
 .dia[aria-pressed=true]{background:var(--grafite);color:var(--areia);border-color:var(--grafite)}
+
+/* áreas da cliente */
+.area{margin-top:22px}
+.area-cab{display:flex;align-items:center;gap:14px;margin-bottom:10px;flex-wrap:wrap}
+.area-cab .label{margin:0}
+.btn.peq{padding:6px 12px;font-size:11px}
+.area-det{margin-top:6px}
+.area-det .label{margin:8px 0 2px}
+/* editor: áreas e links */
+.ed-areas{display:flex;flex-direction:column;gap:14px}
+.ed-area{border:1px solid var(--linha-forte);background:var(--areia);padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.ed-area-cab{display:flex;gap:10px 14px;align-items:center;flex-wrap:wrap}
+.ed-area-nome{font-family:var(--serif);font-size:22px;border:0;border-bottom:1px solid var(--linha-forte);background:transparent;padding:4px 2px;flex:1 1 180px;min-width:0}
+.ed-area-nome:focus{outline:none;border-bottom-color:var(--terracota)}
+.ed-topo{font-size:12px;color:var(--cinza);display:flex;align-items:center;gap:6px}
+.ed-lk{display:grid;grid-template-columns:minmax(90px,170px) 1fr 28px auto;gap:6px;align-items:center}
+.ed-lk input[type=text]{border:0;border-bottom:1px solid var(--linha-forte);background:transparent;padding:6px 2px;width:100%;min-width:0}
+.ed-lk input:focus{outline:none;border-bottom-color:var(--terracota)}
+.mv{display:flex;gap:2px}
+.mv button{border:0;background:none;color:var(--cinza);font-size:15px;padding:2px 6px;line-height:1}
+.mv button:hover{color:var(--terracota)}
+.rot-row{grid-template-columns:1fr 1fr 1fr auto}
+.rot-sel{border:0;border-bottom:1px solid var(--linha-forte);background:transparent;padding:6px 2px;width:100%;min-width:0;font-size:14px}
+@media (max-width:640px){.ed-lk{grid-template-columns:1fr 28px auto}.ed-lk input:nth-child(2){grid-column:1/-1;order:5}.rot-row{grid-template-columns:1fr auto}}
+.ed-slack{border:0;border-bottom:1px solid var(--linha-forte);background:transparent;padding:6px 2px;width:100%;min-width:0}
+.ed-slack:focus{outline:none;border-bottom-color:var(--terracota)}
 </style>
 </head>
 <body>
@@ -264,11 +290,10 @@ footer p{margin:0;max-width:64ch}
       <div class="cli-id">
         <p class="eyebrow" id="cli-eyebrow"></p>
         <h1 id="cli-nome"></h1>
-        <div class="linha-btn"><button type="button" class="btn" id="cli-abrir">Abrir tudo</button><button type="button" class="btn sec" id="cli-editar">Editar</button></div>
+        <div class="linha-btn"><button type="button" class="btn" id="cli-abrir">Abrir tudo</button><button type="button" class="btn sec" id="cli-slack" hidden>Canal no Slack</button><button type="button" class="btn sec" id="cli-editar">Editar</button></div>
       </div>
     </div>
-    <p class="label">Links</p>
-    <div class="cli-links" id="cli-links"></div>
+    <div id="cli-areas"></div>
   </section>
 
   <div class="detalhe editor" id="ed-cli" hidden></div>
@@ -616,25 +641,41 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
 
 
 
-/* ---------- clientes: ficam só neste navegador (nunca no GitHub nem na planilha publicada) ---------- */
+/* ---------- clientes: ficam só neste navegador (nunca no GitHub nem na planilha publicada) ----------
+   Cada cliente tem ÁREAS (ex.: "Dia a dia", "Nota fiscal"); cada área tem seus links. */
 (function(){
-  const SUG=["Drive","Agenda","Notion","Trello","Gmail"];
+  const MODELO=["Drive","Agenda","Notion","Trello","Gmail"];
   const CORES=["#e6c8b6","#d5e3ec","#e4dccb","#dcd2c0","#cfcdc4"];
   const DIAS=["dom","seg","ter","qua","qui","sex","sáb"];
-  let clientes=store("mesa.clientes")||[];
+  const novoId=()=>"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  function normaliza(c){
+    if(!Array.isArray(c.areas))c.areas=[{id:novoId(),n:"Dia a dia",top:true,links:Array.isArray(c.links)?c.links:[]}];
+    delete c.links;
+    c.rotinas=Array.isArray(c.rotinas)?c.rotinas:[];
+    return c;
+  }
+  let clientes=(store("mesa.clientes")||[]).map(normaliza);
   let modo=store("mesa.modoCliente")===true;
   const salvar=()=>store("mesa.clientes",clientes);
-  const novoId=()=>"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  if(clientes.length)salvar();
   const frames=$("#frames"),det=$("#det-cli"),ed=$("#ed-cli");
   let aberto=null;
   const principal=()=>clientes[0]||null;
   const hostDe=u=>{try{return new URL(u).hostname.replace(/^www\./,"")}catch(e){return ""}};
   const fixaUrl=t=>urlOk(/^[a-z][a-z0-9+.-]*:/i.test(t)?t:"https://"+t);
+  const mover=(no,dir)=>{const p=no.parentNode;if(dir<0&&no.previousElementSibling)p.insertBefore(no,no.previousElementSibling);else if(dir>0&&no.nextElementSibling)p.insertBefore(no.nextElementSibling,no)};
 
-  function paraAbrir(c){const est=c.links.filter(l=>l.s);return (est.length?est:c.links.slice(0,5)).map(l=>[l.n,l.u])}
+  /* o que abre: dentro de cada área, os links com ★ (sem nenhuma ★, os 5 primeiros) */
+  function listaDaArea(a){const est=a.links.filter(l=>l.s);return (est.length?est:a.links.slice(0,5)).map(l=>[l.n,l.u])}
+  function paraAbrir(c){return c.areas.filter(a=>a.top).flatMap(listaDaArea)}
   function abrir(c){
     const l=paraAbrir(c);
-    if(!l.length){aviso("Esta cliente ainda não tem links. Clique em “Editar” para adicionar.");return}
+    if(!l.length){aviso("Esta cliente ainda não tem links no “Abrir tudo”. Clique em “Editar”.");return}
+    abrirTudo(l);
+  }
+  function abrirArea(a){
+    const l=listaDaArea(a);
+    if(!l.length){aviso("Este grupo ainda não tem links.");return}
     abrirTudo(l);
   }
 
@@ -652,28 +693,36 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
 
   /* ---------- Mesa da cliente (modo cliente) ---------- */
   function renderMesaCli(){
-    const c=principal(),box=$("#cli-links");
+    const c=principal(),box=$("#cli-areas");
     box.replaceChildren();
     const d=new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"});
     $("#cli-eyebrow").textContent="Mesa da cliente · "+d;
     const img=$("#cfoto-img"),vz=$("#cfoto-vazio"),ac=$("#cfoto-acoes");
     if(!c){
       $("#cli-nome").textContent="Quem é a cliente deste perfil?";
-      $("#cli-abrir").hidden=true;$("#cli-editar").textContent="Criar a cliente deste perfil";
+      $("#cli-abrir").hidden=true;$("#cli-slack").hidden=true;$("#cli-editar").textContent="Criar a cliente deste perfil";
       img.hidden=true;vz.hidden=false;vz.textContent="+";ac.hidden=true;
       window.tituloBase="Mesa Révem";
       return;
     }
     $("#cli-nome").textContent=c.name;
-    $("#cli-abrir").hidden=false;$("#cli-editar").textContent="Editar";
+    $("#cli-abrir").hidden=false;$("#cli-slack").hidden=!c.slack;$("#cli-editar").textContent="Editar";
     window.tituloBase="Mesa · "+c.name;if(!window.mesaOcupada)document.title=window.tituloBase;
     if(c.foto){img.src=c.foto;img.hidden=false;vz.hidden=true;ac.hidden=false}
     else{img.hidden=true;img.removeAttribute("src");vz.hidden=false;vz.textContent=(c.name[0]||"?").toUpperCase();ac.hidden=true}
-    c.links.forEach(l=>box.append(el("a",{href:l.u,target:"_blank",rel:"noopener",class:"atalho"},[
-      el("span",{},[el("strong",{text:(l.s?"★ ":"")+l.n}),el("small",{text:hostDe(l.u)})]),el("span",{class:"seta",text:"→"})])));
-    if(!c.links.length)box.append(el("p",{class:"small",text:"Ainda sem links. Clique em Editar para adicionar."}));
+    c.areas.forEach(a=>{
+      const grid=el("div",{class:"cli-links"});
+      a.links.forEach(l=>grid.append(el("a",{href:l.u,target:"_blank",rel:"noopener",class:"atalho"},[
+        el("span",{},[el("strong",{text:(l.s?"★ ":"")+l.n}),el("small",{text:hostDe(l.u)})]),el("span",{class:"seta",text:"→"})])));
+      if(!a.links.length)grid.append(el("p",{class:"small",text:"Sem links neste grupo ainda."}));
+      const cab=[el("p",{class:"label",text:a.n})];
+      if(a.links.length){const ab=el("button",{type:"button",class:"btn sec peq",text:"Abrir tudo"});ab.onclick=()=>abrirArea(a);cab.push(ab)}
+      box.append(el("div",{class:"area"},[el("div",{class:"area-cab"},cab),grid]));
+    });
+    if(!c.areas.length)box.append(el("p",{class:"small",text:"Ainda sem links. Clique em Editar para adicionar."}));
   }
   $("#cli-abrir").onclick=()=>{const c=principal();if(c)abrir(c)};
+  $("#cli-slack").onclick=()=>{const c=principal();if(c&&c.slack)window.open(c.slack,"_blank")};
   $("#cli-editar").onclick=()=>editar(principal());
   $("#cfoto-btn").onclick=()=>{if(!principal()){editar(null);return}$("#cfoto-in").click()};
   $("#cfoto-troca").onclick=()=>$("#cfoto-in").click();
@@ -697,7 +746,11 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
     doDia.forEach(r=>{
       const chave=c.id+":"+r.id;
       const cb=el("input",{type:"checkbox",class:"check","aria-label":"Rotina concluída"});cb.checked=feitas.ids.includes(chave);
-      const nome=r.u?el("a",{href:r.u,target:"_blank",rel:"noopener",class:"nome-rot",text:r.n}):el("span",{class:"nome-rot",text:r.n});
+      const area=r.a?c.areas.find(a=>a.id===r.a):null;
+      let nome;
+      if(area){nome=el("a",{href:"#",class:"nome-rot",text:r.n+" →",title:"Abre o grupo “"+area.n+"”"});nome.onclick=e=>{e.preventDefault();abrirArea(area)}}
+      else if(r.u)nome=el("a",{href:r.u,target:"_blank",rel:"noopener",class:"nome-rot",text:r.n});
+      else nome=el("span",{class:"nome-rot",text:r.n});
       const row=el("div",{class:"intent rot"+(cb.checked?" done":"")},[el("span",{class:"num",text:"↻"}),nome,cb]);
       cb.onchange=()=>{
         feitas.ids=feitas.ids.filter(x=>x!==chave);if(cb.checked)feitas.ids.push(chave);
@@ -729,42 +782,76 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
     ed.hidden=true;
     if(aberto===c.id&&!det.hidden){det.hidden=true;aberto=null;return}
     aberto=c.id;det.replaceChildren();det.hidden=false;
-    const ul=el("ul");
-    c.links.forEach(l=>ul.append(el("li",{},[el("a",{href:l.u,target:"_blank",rel:"noopener",text:(l.s?"★ ":"")+l.n})])));
-    if(!c.links.length)ul.append(el("li",{},[el("span",{class:"small",text:"Nenhum link ainda."})]));
+    det.append(el("h3",{text:c.name}),el("p",{class:"small",text:"★ = abre no “Abrir tudo” do grupo. O “Abrir tudo” do cartão abre só os grupos marcados como principais."}));
+    if(c.slack)det.append(el("p",{},[el("a",{href:c.slack,target:"_blank",rel:"noopener",class:"link",text:"Canal da equipe no Slack →"})]));
+    c.areas.forEach(a=>{
+      const ul=el("ul");
+      a.links.forEach(l=>ul.append(el("li",{},[el("a",{href:l.u,target:"_blank",rel:"noopener",text:(l.s?"★ ":"")+l.n})])));
+      if(!a.links.length)ul.append(el("li",{},[el("span",{class:"small",text:"Nenhum link ainda."})]));
+      const ab=el("button",{class:"link",type:"button",text:"Abrir este grupo"});ab.onclick=()=>abrirArea(a);
+      det.append(el("div",{class:"area-det"},[el("p",{class:"label",text:a.n+(a.top?" · principal":"")}),ul,ab]));
+    });
     const b=el("button",{class:"btn",type:"button",text:"Abrir tudo de "+c.name});b.onclick=()=>abrir(c);
     const e=el("button",{class:"btn sec",type:"button",text:"Editar"});e.onclick=()=>editar(c);
-    det.append(el("h3",{text:c.name}),el("p",{class:"small",text:"★ = abre no “Abrir tudo”. Os outros ficam só nesta lista."}),ul,el("div",{class:"linha-btn"},[b,e]));
+    det.append(el("div",{class:"linha-btn"},[b,e]));
   }
 
   /* ---------- formulário: nova cliente / editar ---------- */
   function editar(c){
     det.hidden=true;aberto=null;ed.replaceChildren();ed.hidden=false;
     const nome=el("input",{type:"text",class:"ed-nome",placeholder:"Nome da cliente","aria-label":"Nome da cliente"});nome.value=c?c.name:"";
-    const linhas=[];
-    function linha(rotulo,fixo,l){
-      const n=fixo?el("span",{class:"ed-rot",text:rotulo}):el("input",{type:"text",placeholder:"Nome do link","aria-label":"Nome do link"});
-      if(!fixo)n.value=l?l.n:"";
-      const u=el("input",{type:"text",placeholder:"https://…","aria-label":"Endereço"+(rotulo?" de "+rotulo:" do link")});u.value=l?l.u:"";
+    const slack=el("input",{type:"text",class:"ed-slack",placeholder:"https://… (link do canal no Slack)","aria-label":"Link do canal da cliente no Slack"});slack.value=(c&&c.slack)||"";
+    const areasBox=el("div",{class:"ed-areas"});
+
+    function linhaLink(l,modelo){
+      const n=el("input",{type:"text",placeholder:"Nome do link","aria-label":"Nome do link"});n.value=l?l.n:"";
+      const u=el("input",{type:"text",placeholder:"https://…","aria-label":"Endereço do link"});u.value=l?l.u:"";
       const st=el("button",{type:"button",class:"star",title:"★ abre no “Abrir tudo”","aria-label":"Abrir no “Abrir tudo”"});
-      let on=l?!!l.s:fixo;
+      let on=l?!!l.s:false;
       const pinta=()=>{st.textContent=on?"★":"☆";st.setAttribute("aria-pressed",String(on))};pinta();
       st.onclick=()=>{on=!on;pinta()};
-      const row=el("div",{class:"ed-row"},[n,u,st]);
-      const obj={fixo,rotulo,n,u,row,estrela:()=>on};
-      if(!fixo){const x=el("button",{type:"button",class:"x",text:"×","aria-label":"Remover link"});x.onclick=()=>{row.remove();linhas.splice(linhas.indexOf(obj),1)};row.append(x)}
-      linhas.push(obj);return row;
+      const row=el("div",{class:"ed-lk"});
+      const sobe=el("button",{type:"button",title:"Subir","aria-label":"Subir",text:"↑"});
+      const desce=el("button",{type:"button",title:"Descer","aria-label":"Descer",text:"↓"});
+      const x=el("button",{type:"button",title:"Remover este link","aria-label":"Remover este link",text:"×"});
+      sobe.onclick=()=>mover(row,-1);desce.onclick=()=>mover(row,1);x.onclick=()=>row.remove();
+      row.append(n,u,st,el("span",{class:"mv"},[sobe,desce,x]));
+      row._o={n,u,estrela:()=>on,modelo:!!modelo};
+      return row;
     }
-    const box=el("div",{class:"ed-lista"});
-    SUG.forEach(sg=>{const ex=c&&c.links.find(l=>l.n.toLowerCase()===sg.toLowerCase());box.append(linha(sg,true,ex))});
-    if(c)c.links.filter(l=>!SUG.some(sg=>sg.toLowerCase()===l.n.toLowerCase())).forEach(l=>box.append(linha("",false,l)));
-    const mais=el("button",{type:"button",class:"link",text:"+ Adicionar link"});mais.onclick=()=>box.append(linha("",false,null));
+
+    function blocoArea(a,ehNova){
+      const blk=el("div",{class:"ed-area"});
+      const nm=el("input",{type:"text",class:"ed-area-nome",placeholder:"Nome do grupo (ex.: Nota fiscal)","aria-label":"Nome do grupo"});nm.value=a?a.n:"";
+      const top=el("input",{type:"checkbox"});top.checked=a?!!a.top:false;
+      const sobe=el("button",{type:"button",title:"Subir o grupo","aria-label":"Subir o grupo",text:"↑"});
+      const desce=el("button",{type:"button",title:"Descer o grupo","aria-label":"Descer o grupo",text:"↓"});
+      const x=el("button",{type:"button",title:"Remover o grupo inteiro","aria-label":"Remover o grupo inteiro",text:"×"});
+      sobe.onclick=()=>mover(blk,-1);desce.onclick=()=>mover(blk,1);
+      x.onclick=()=>{if(!confirm("Remover este grupo e todos os links dele?"))return;blk.remove()};
+      const lista=el("div",{class:"ed-lista"});
+      ((a&&a.links)||[]).forEach(l=>lista.append(linhaLink(l,ehNova&&!l.u)));
+      const mais=el("button",{type:"button",class:"link",text:"+ Adicionar link"});mais.onclick=()=>{const r=linhaLink(null,false);lista.append(r);r._o.n.focus()};
+      blk.append(el("div",{class:"ed-area-cab"},[nm,el("label",{class:"ed-topo"},[top,"No “Abrir tudo” do cartão"]),el("span",{class:"mv"},[sobe,desce,x])]),lista,mais);
+      blk._o={id:a?a.id:novoId(),nm,top,lista};
+      return blk;
+    }
+
+    if(c)c.areas.forEach(a=>areasBox.append(blocoArea(a,false)));
+    else areasBox.append(blocoArea({id:novoId(),n:"Dia a dia",top:true,links:MODELO.map(m=>({n:m,u:"",s:true}))},true));
+    const maisArea=el("button",{type:"button",class:"link",text:"+ Novo grupo (ex.: Nota fiscal)"});
+    maisArea.onclick=()=>{const b=blocoArea({id:novoId(),n:"",top:false,links:[]},false);areasBox.append(b);b._o.nm.focus()};
+    const areasAtuais=()=>[...areasBox.children].map(b=>({id:b._o.id,nome:b._o.nm.value.trim()||"(sem nome)"}));
 
     /* rotinas fixas */
     const rotLinhas=[];
     function rotLinha(r){
       const n=el("input",{type:"text",placeholder:"Ex.: Gerar as notas fiscais","aria-label":"Nome da rotina"});n.value=r?r.n:"";
-      const u=el("input",{type:"text",placeholder:"Link para abrir (opcional)","aria-label":"Link da rotina"});u.value=r&&r.u?r.u:"";
+      const sel=el("select",{class:"rot-sel","aria-label":"Abrir um grupo"});
+      const opcoes=()=>{const atual=sel.value;sel.replaceChildren(el("option",{value:"",text:"Abrir um grupo (opcional)"}));areasAtuais().forEach(a=>sel.append(el("option",{value:a.id,text:"Abrir o grupo: "+a.nome})));sel.value=[...sel.options].some(o=>o.value===atual)?atual:""};
+      opcoes();if(r&&r.a&&[...sel.options].some(o=>o.value===r.a))sel.value=r.a;
+      sel.addEventListener("focus",opcoes);sel.addEventListener("mousedown",opcoes);
+      const u=el("input",{type:"text",placeholder:"…ou um link (opcional)","aria-label":"Link da rotina"});u.value=r&&r.u?r.u:"";
       const dias=new Set(r?r.d:[]);
       const wrap=el("div",{class:"dias"});
       const pintaDias=()=>[...wrap.querySelectorAll(".dia")].forEach((b,i)=>b.setAttribute("aria-pressed",String(dias.has(i))));
@@ -772,8 +859,8 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
       const util=el("button",{type:"button",class:"link",text:"seg–sex"});util.onclick=()=>{[1,2,3,4,5].forEach(i=>dias.add(i));pintaDias()};
       wrap.append(util);
       const x=el("button",{type:"button",class:"x",text:"×","aria-label":"Remover rotina"});
-      const row=el("div",{class:"rot-row"},[n,u,x,wrap]);
-      const obj={id:r?r.id:novoId(),n,u,dias};
+      const row=el("div",{class:"rot-row"},[n,sel,u,x,wrap]);
+      const obj={id:r?r.id:novoId(),n,sel,u,dias};
       x.onclick=()=>{row.remove();rotLinhas.splice(rotLinhas.indexOf(obj),1)};
       rotLinhas.push(obj);return row;
     }
@@ -786,28 +873,37 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
     salvarB.onclick=()=>{
       const nm=nome.value.trim();
       if(!nm){aviso("Escreva o nome da cliente.");nome.focus();return}
-      const links=[];
-      for(const L of linhas){
-        const url=L.u.value.trim(),rot=L.fixo?L.rotulo:L.n.value.trim();
-        if(!url&&!rot)continue;
-        if(!url){if(L.fixo)continue;aviso("Falta o endereço do link “"+rot+"”.");L.u.focus();return}
-        if(!rot){aviso("Falta o nome de um dos links.");L.n.focus();return}
-        const ok=fixaUrl(url);
-        if(!ok){aviso("O endereço de “"+rot+"” não parece um link válido.");L.u.focus();return}
-        links.push({n:rot.slice(0,80),u:ok,s:L.estrela()});
+      let slackUrl=null;
+      if(slack.value.trim()){slackUrl=fixaUrl(slack.value.trim());if(!slackUrl){aviso("O link do canal do Slack não parece válido.");slack.focus();return}}
+      const areas=[];
+      for(const blk of areasBox.children){
+        const o=blk._o,nmA=o.nm.value.trim(),links=[];
+        for(const row of o.lista.children){
+          const r=row._o,ln=r.n.value.trim(),lu=r.u.value.trim();
+          if(!lu&&(r.modelo||!ln))continue;
+          if(!lu){aviso("Falta o endereço do link “"+ln+"”.");r.u.focus();return}
+          if(!ln){aviso("Falta o nome de um dos links.");r.n.focus();return}
+          const ok=fixaUrl(lu);
+          if(!ok){aviso("O endereço de “"+ln+"” não parece um link válido.");r.u.focus();return}
+          links.push({n:ln.slice(0,80),u:ok,s:r.estrela()});
+        }
+        if(!nmA&&!links.length)continue;
+        if(!nmA){aviso("Dê um nome ao grupo (ex.: Nota fiscal).");o.nm.focus();return}
+        areas.push({id:o.id,n:nmA.slice(0,60),top:o.top.checked,links});
       }
+      if(areas.length&&!areas.some(a=>a.top))areas[0].top=true;
       const rotinas=[];
       for(const R of rotLinhas){
-        const rn=R.n.value.trim(),ru=R.u.value.trim();
-        if(!rn&&!ru&&!R.dias.size)continue;
+        const rn=R.n.value.trim(),ru=R.u.value.trim(),ra=R.sel.value;
+        if(!rn&&!ru&&!ra&&!R.dias.size)continue;
         if(!rn){aviso("Falta o nome de uma rotina.");R.n.focus();return}
         if(!R.dias.size){aviso("Marque pelo menos um dia para a rotina “"+rn+"”.");return}
         let uu=null;
-        if(ru){uu=fixaUrl(ru);if(!uu){aviso("O link da rotina “"+rn+"” não parece válido.");R.u.focus();return}}
-        rotinas.push({id:R.id,n:rn.slice(0,80),d:[...R.dias].sort((a,b)=>a-b),u:uu});
+        if(!ra&&ru){uu=fixaUrl(ru);if(!uu){aviso("O link da rotina “"+rn+"” não parece válido.");R.u.focus();return}}
+        rotinas.push({id:R.id,n:rn.slice(0,80),d:[...R.dias].sort((a,b)=>a-b),u:uu,a:ra&&areas.some(a=>a.id===ra)?ra:null});
       }
-      if(c){c.name=nm.slice(0,60);c.links=links;c.rotinas=rotinas}
-      else clientes.push({id:novoId(),name:nm.slice(0,60),cor:CORES[clientes.length%CORES.length],links,rotinas,foto:null});
+      if(c){c.name=nm.slice(0,60);c.areas=areas;c.rotinas=rotinas;c.slack=slackUrl}
+      else clientes.push({id:novoId(),name:nm.slice(0,60),cor:CORES[clientes.length%CORES.length],areas,rotinas,foto:null,slack:slackUrl});
       salvar();desenhar();ed.hidden=true;aviso(c?"Cliente atualizada.":"Cliente criada.");
     };
     const botoes=[salvarB,cancelar];
@@ -820,10 +916,16 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
       botoes.push(ap);
     }
     ed.append(el("h3",{text:c?"Editar "+c.name:"Nova cliente"}),
-      el("p",{class:"small",text:"Preencha só o que ela usa. ★ = abre no “Abrir tudo” (se nenhum tiver estrela, abrem os 5 primeiros). Estes dados ficam só neste navegador."}),
-      nome,box,mais,
+      el("p",{class:"small",text:"Tudo aqui pode ser renomeado, apagado, repetido e reordenado. Linhas em branco são ignoradas. ★ = abre no “Abrir tudo” do grupo (sem nenhuma ★, abrem os 5 primeiros). Estes dados ficam só neste navegador."}),
+      nome,
+      el("p",{class:"label",text:"Canal da equipe no Slack"}),
+      el("p",{class:"small",text:"Cole o link do canal desta cliente (opcional). Ele aparece como um botão na Mesa da cliente."}),
+      slack,
+      el("p",{class:"label",text:"Grupos e links"}),
+      el("p",{class:"small",text:"Um grupo reúne links que abrem juntos (ex.: “Nota fiscal” = o aplicativo da nota, o cadastro de clientes e a planilha das notas). Cada cliente tem os seus grupos: crie os que fizerem sentido para ela. O grupo marcado com “No Abrir tudo do cartão” abre quando você clica na moldura da cliente."}),
+      areasBox,maisArea,
       el("p",{class:"label",text:"Rotinas fixas"}),
-      el("p",{class:"small",text:"Aparecem em “Intenções de hoje” da Mesa da cliente, nos dias marcados (ex.: sexta = gerar as notas fiscais)."}),
+      el("p",{class:"small",text:"Aparecem em “Intenções de hoje” da Mesa da cliente, nos dias marcados. A rotina pode abrir um grupo inteiro (ex.: sexta = Gerar as notas fiscais, abrindo o grupo Nota fiscal)."}),
       rotBox,maisRot,
       el("div",{class:"linha-btn"},botoes));
     nome.focus();
@@ -832,24 +934,32 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
 
   /* ---------- cópia de segurança ---------- */
   $("#cli-baixar").onclick=()=>{
-    const blob=new Blob([JSON.stringify({versao:2,clientes},null,2)],{type:"application/json"});
+    const blob=new Blob([JSON.stringify({versao:3,clientes},null,2)],{type:"application/json"});
     const a=el("a",{href:URL.createObjectURL(blob),download:"clientes-mesa-revem.json"});document.body.append(a);a.click();a.remove();
   };
+  const limpaLinks=ls=>(Array.isArray(ls)?ls:[]).slice(0,60).map(l=>({n:String(l&&l.n||"").trim().slice(0,80),u:urlOk(l&&l.u||""),s:!!(l&&l.s)})).filter(l=>l.n&&l.u);
   $("#cli-rest").onchange=e=>{
     const f=e.target.files[0];e.target.value="";if(!f)return;
     f.text().then(t=>{
       let d;try{d=JSON.parse(t)}catch(x){aviso("Este arquivo não é uma cópia válida.");return}
       const lista=Array.isArray(d)?d:d&&d.clientes;
       if(!Array.isArray(lista)){aviso("Este arquivo não é uma cópia válida.");return}
-      const limpo=lista.slice(0,100).filter(x=>x&&typeof x.name==="string"&&x.name.trim()).map((x,i)=>({
-        id:novoId(),name:x.name.trim().slice(0,60),cor:CORES.includes(x.cor)?x.cor:CORES[i%CORES.length],
-        foto:(typeof x.foto==="string"&&/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(x.foto)&&x.foto.length<600000)?x.foto:null,
-        links:(Array.isArray(x.links)?x.links:[]).slice(0,60).map(l=>({n:String(l&&l.n||"").trim().slice(0,80),u:urlOk(l&&l.u||""),s:!!(l&&l.s)})).filter(l=>l.n&&l.u),
-        rotinas:(Array.isArray(x.rotinas)?x.rotinas:[]).slice(0,40).map(r=>({
-          id:String(r&&r.id||novoId()).slice(0,30),n:String(r&&r.n||"").trim().slice(0,80),
-          d:[...new Set((Array.isArray(r&&r.d)?r.d:[]).map(Number).filter(n=>Number.isInteger(n)&&n>=0&&n<=6))].sort((a,b)=>a-b),
-          u:r&&r.u?urlOk(r.u):null})).filter(r=>r.n&&r.d.length)
-      }));
+      const limpo=lista.slice(0,100).filter(x=>x&&typeof x.name==="string"&&x.name.trim()).map((x,i)=>{
+        /* aceita a cópia antiga (só "links") e a nova (com "areas") */
+        let areas=Array.isArray(x.areas)
+          ?x.areas.slice(0,20).map(a=>({id:String(a&&a.id||novoId()).slice(0,30),n:String(a&&a.n||"").trim().slice(0,60),top:!!(a&&a.top),links:limpaLinks(a&&a.links)})).filter(a=>a.n)
+          :[{id:novoId(),n:"Dia a dia",top:true,links:limpaLinks(x.links)}];
+        if(areas.length&&!areas.some(a=>a.top))areas[0].top=true;
+        return {
+          id:novoId(),name:x.name.trim().slice(0,60),cor:CORES.includes(x.cor)?x.cor:CORES[i%CORES.length],areas,slack:x.slack?urlOk(x.slack):null,
+          foto:(typeof x.foto==="string"&&/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(x.foto)&&x.foto.length<600000)?x.foto:null,
+          rotinas:(Array.isArray(x.rotinas)?x.rotinas:[]).slice(0,40).map(r=>({
+            id:String(r&&r.id||novoId()).slice(0,30),n:String(r&&r.n||"").trim().slice(0,80),
+            d:[...new Set((Array.isArray(r&&r.d)?r.d:[]).map(Number).filter(n=>Number.isInteger(n)&&n>=0&&n<=6))].sort((a,b)=>a-b),
+            u:r&&r.u?urlOk(r.u):null,
+            a:r&&typeof r.a==="string"&&areas.some(a=>a.id===r.a)?r.a:null})).filter(r=>r.n&&r.d.length)
+        };
+      });
       if(!limpo.length){aviso("A cópia não tem nenhuma cliente.");return}
       if(!confirm("Isto substitui as "+clientes.length+" cliente(s) deste navegador por "+limpo.length+" da cópia. Continuar?"))return;
       clientes=limpo;salvar();desenhar();det.hidden=true;ed.hidden=true;aviso("Cópia restaurada.");
