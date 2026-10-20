@@ -195,6 +195,26 @@ footer p{margin:0;max-width:64ch}
 .x{border:0;background:none;color:var(--cinza);font-size:18px;padding:2px 6px}
 .modo{display:flex;align-items:center;gap:8px}
 @media (max-width:640px){.ed-row{grid-template-columns:90px 1fr 30px auto}}
+.nome-btn{font-family:var(--sans);font-style:normal;font-size:12px;letter-spacing:.14em;text-transform:uppercase;background:none;border:0;color:var(--terracota);margin-left:12px;vertical-align:middle;text-decoration:underline;cursor:pointer;padding:0}
+
+/* mesa da cliente */
+.cli-topo{display:flex;gap:36px;align-items:center;flex-wrap:wrap;padding:6px 0 18px}
+.cli-id{min-width:240px;flex:1}
+#cli-nome{font-family:var(--serif);font-weight:500;font-style:italic;font-size:clamp(34px,5vw,56px);line-height:1.02;margin:6px 0 16px}
+.cli-links{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.moldura-foto .foto-vazio.inicial{font-family:var(--serif);font-style:italic;font-size:72px;letter-spacing:0;text-transform:none;color:var(--grafite)}
+.intent.rot .num{font-size:22px}
+.intent.rot a{text-decoration:underline;text-decoration-color:var(--terracota)}
+.intent.rot.done .nome-rot{text-decoration:line-through;color:var(--cinza)}
+.nome-rot{font-family:var(--serif);font-size:20px;padding:6px 0}
+.rot-titulo{margin:0 0 4px}
+.rot-row{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--linha)}
+.rot-row input[type=text]{border:0;border-bottom:1px solid var(--linha-forte);background:transparent;padding:6px 2px;width:100%;min-width:0}
+.rot-row input:focus{outline:none;border-bottom-color:var(--terracota)}
+.rot-row .dias{grid-column:1/-1}
+.dias{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+.dia{border:1px solid var(--linha-forte);background:transparent;padding:3px 9px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:500}
+.dia[aria-pressed=true]{background:var(--grafite);color:var(--areia);border-color:var(--grafite)}
 </style>
 </head>
 <body>
@@ -210,7 +230,7 @@ footer p{margin:0;max-width:64ch}
       <input type="file" id="foto-in" accept="image/*" hidden>
       <div class="foto-acoes small" id="foto-acoes" hidden><button type="button" class="link" id="foto-troca">Trocar foto</button> · <button type="button" class="link" id="foto-rm">Remover</button></div>
     </div>
-    <div class="hello"><p class="eyebrow" id="date"></p><h1 id="hello">Bom dia, Maressa</h1></div>
+    <div class="hello"><p class="eyebrow" id="date"></p><h1 id="hello">Bom dia</h1></div>
     <div class="quote">
       <textarea class="q-text" id="q-text" rows="3" placeholder="Escreva a frase de hoje" aria-label="Frase do dia"></textarea>
       <input class="q-by" id="q-by" type="text" placeholder="Autor ou referência" aria-label="Autor ou referência da frase">
@@ -232,8 +252,26 @@ footer p{margin:0;max-width:64ch}
       <span class="cli-tools small"><button type="button" class="link" id="cli-baixar">Baixar cópia</button> · <label class="link" for="cli-rest">Restaurar cópia</label><input type="file" id="cli-rest" accept=".json,application/json" hidden></span></div>
     <div class="frames" id="frames"></div>
     <div class="detalhe" id="det-cli" hidden></div>
-    <div class="detalhe editor" id="ed-cli" hidden></div>
   </section>
+
+  <section id="mesa-cli" aria-label="Mesa da cliente" hidden>
+    <div class="cli-topo">
+      <div class="retrato">
+        <button type="button" class="moldura-foto" id="cfoto-btn" aria-label="Escolher a logo ou a foto da cliente"><img id="cfoto-img" alt="Logo ou foto da cliente" hidden><span class="foto-vazio inicial" id="cfoto-vazio"></span></button>
+        <input type="file" id="cfoto-in" accept="image/*" hidden>
+        <div class="foto-acoes small" id="cfoto-acoes" hidden><button type="button" class="link" id="cfoto-troca">Trocar</button> · <button type="button" class="link" id="cfoto-rm">Remover</button></div>
+      </div>
+      <div class="cli-id">
+        <p class="eyebrow" id="cli-eyebrow"></p>
+        <h1 id="cli-nome"></h1>
+        <div class="linha-btn"><button type="button" class="btn" id="cli-abrir">Abrir tudo</button><button type="button" class="btn sec" id="cli-editar">Editar</button></div>
+      </div>
+    </div>
+    <p class="label">Links</p>
+    <div class="cli-links" id="cli-links"></div>
+  </section>
+
+  <div class="detalhe editor" id="ed-cli" hidden></div>
 
   <section class="hoje" aria-label="Hoje">
     <div>
@@ -277,7 +315,7 @@ footer p{margin:0;max-width:64ch}
 
   <footer>
     <p>Esta página guarda só links, nunca senhas. Se "Abrir tudo" abrir só uma aba, libere pop-ups para este site no Chrome. Cronômetro, água e música funcionam com esta aba aberta (fixe a aba).</p>
-    <label class="small modo"><input type="checkbox" id="modo-cli"> Este perfil é de uma cliente (esconde as guias gerais)</label>
+    <label class="small modo"><input type="checkbox" id="modo-cli"> Este perfil é a Mesa de uma cliente (esconde o que é pessoal)</label>
     <a class="ghost" href="https://docs.google.com/spreadsheets/d/1Ei9Fi3dOQBsdPhO2PPP_qkusf_cSBkk6OJme0QzeAmA/edit" target="_blank" rel="noopener" id="edit">Editar meus links</a>
   </footer>
 </div>
@@ -341,7 +379,14 @@ function abrirTudo(links){
 
 /* topo */
 const now=new Date(),h=now.getHours();
-function saudar(){const hh=new Date().getHours();$("#hello").textContent=(hh<12?"Bom dia":hh<18?"Boa tarde":"Boa noite")+", Maressa"}saudar();
+function saudar(){
+  const hh=new Date().getHours(),g=hh<12?"Bom dia":hh<18?"Boa tarde":"Boa noite";
+  const nome=String(store("mesa.nome")||"").trim();
+  const h1=$("#hello");h1.replaceChildren(document.createTextNode(nome?g+", "+nome:g));
+  const b=el("button",{type:"button",class:"nome-btn",title:nome?"Mudar o nome":"Escrever o seu nome","aria-label":nome?"Mudar o nome":"Escrever o seu nome",text:nome?"✎":"+ seu nome"});
+  b.onclick=()=>{const n=prompt("Como você quer ser chamado(a) na Mesa?",nome);if(n===null)return;store("mesa.nome",n.trim().slice(0,40));saudar()};
+  h1.append(b);
+}saudar();
 $("#date").textContent=now.toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"});
 const hoje=now.toLocaleDateString("sv-SE");
 
@@ -491,7 +536,7 @@ $("#intents").append(fim);checaFim();
     fr.onload=()=>{const im=new Image();im.onload=()=>{
       const r=Math.min(1,560/im.width),c=document.createElement("canvas");
       c.width=Math.round(im.width*r);c.height=Math.round(im.height*r);
-      c.getContext("2d").drawImage(im,0,0,c.width,c.height);
+      const g=c.getContext("2d");g.fillStyle="#fff";g.fillRect(0,0,c.width,c.height);g.drawImage(im,0,0,c.width,c.height);
       try{localStorage.setItem("mesa.foto",JSON.stringify(c.toDataURL("image/jpeg",.85)))}catch(e){aviso("Não consegui guardar a foto neste navegador.")}
       mostrar();
     };im.src=fr.result};
@@ -522,7 +567,7 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
     $("#go").textContent=timer?"Pausar":"Iniciar";
     const n=ciclos>0&&ciclos%4===0?4:ciclos%4;
     document.querySelectorAll("#dots i").forEach((d,i)=>d.classList.toggle("on",i<n));
-    document.title=timer?fmt(left)+" · "+nomes[mode]:"Mesa Révem";
+    document.title=timer?fmt(left)+" · "+nomes[mode]:(window.tituloBase||"Mesa Révem");
   }
   function parar(){clearInterval(timer);timer=null;endAt=null}
   function setMode(m){parar();mode=m;left=CFG[m]*60;render()}
@@ -575,19 +620,95 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
 (function(){
   const SUG=["Drive","Agenda","Notion","Trello","Gmail"];
   const CORES=["#e6c8b6","#d5e3ec","#e4dccb","#dcd2c0","#cfcdc4"];
+  const DIAS=["dom","seg","ter","qua","qui","sex","sáb"];
   let clientes=store("mesa.clientes")||[];
+  let modo=store("mesa.modoCliente")===true;
   const salvar=()=>store("mesa.clientes",clientes);
   const novoId=()=>"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
   const frames=$("#frames"),det=$("#det-cli"),ed=$("#ed-cli");
   let aberto=null;
+  const principal=()=>clientes[0]||null;
+  const hostDe=u=>{try{return new URL(u).hostname.replace(/^www\./,"")}catch(e){return ""}};
+  const fixaUrl=t=>urlOk(/^[a-z][a-z0-9+.-]*:/i.test(t)?t:"https://"+t);
 
   function paraAbrir(c){const est=c.links.filter(l=>l.s);return (est.length?est:c.links.slice(0,5)).map(l=>[l.n,l.u])}
   function abrir(c){
     const l=paraAbrir(c);
-    if(!l.length){aviso("Esta cliente ainda não tem links. Clique em “ver links” e depois em “Editar”.");return}
+    if(!l.length){aviso("Esta cliente ainda não tem links. Clique em “Editar” para adicionar.");return}
     abrirTudo(l);
   }
 
+  /* foto ou logo da cliente (guardada dentro do cartão dela, só neste navegador) */
+  function reduzir(file,depois){
+    const fr=new FileReader();
+    fr.onload=()=>{const im=new Image();im.onload=()=>{
+      const r=Math.min(1,560/im.width),c=document.createElement("canvas");
+      c.width=Math.round(im.width*r);c.height=Math.round(im.height*r);
+      const g=c.getContext("2d");g.fillStyle="#fff";g.fillRect(0,0,c.width,c.height);g.drawImage(im,0,0,c.width,c.height);
+      depois(c.toDataURL("image/jpeg",.85));
+    };im.src=fr.result};
+    fr.readAsDataURL(file);
+  }
+
+  /* ---------- Mesa da cliente (modo cliente) ---------- */
+  function renderMesaCli(){
+    const c=principal(),box=$("#cli-links");
+    box.replaceChildren();
+    const d=new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"});
+    $("#cli-eyebrow").textContent="Mesa da cliente · "+d;
+    const img=$("#cfoto-img"),vz=$("#cfoto-vazio"),ac=$("#cfoto-acoes");
+    if(!c){
+      $("#cli-nome").textContent="Quem é a cliente deste perfil?";
+      $("#cli-abrir").hidden=true;$("#cli-editar").textContent="Criar a cliente deste perfil";
+      img.hidden=true;vz.hidden=false;vz.textContent="+";ac.hidden=true;
+      window.tituloBase="Mesa Révem";
+      return;
+    }
+    $("#cli-nome").textContent=c.name;
+    $("#cli-abrir").hidden=false;$("#cli-editar").textContent="Editar";
+    window.tituloBase="Mesa · "+c.name;if(!window.mesaOcupada)document.title=window.tituloBase;
+    if(c.foto){img.src=c.foto;img.hidden=false;vz.hidden=true;ac.hidden=false}
+    else{img.hidden=true;img.removeAttribute("src");vz.hidden=false;vz.textContent=(c.name[0]||"?").toUpperCase();ac.hidden=true}
+    c.links.forEach(l=>box.append(el("a",{href:l.u,target:"_blank",rel:"noopener",class:"atalho"},[
+      el("span",{},[el("strong",{text:(l.s?"★ ":"")+l.n}),el("small",{text:hostDe(l.u)})]),el("span",{class:"seta",text:"→"})])));
+    if(!c.links.length)box.append(el("p",{class:"small",text:"Ainda sem links. Clique em Editar para adicionar."}));
+  }
+  $("#cli-abrir").onclick=()=>{const c=principal();if(c)abrir(c)};
+  $("#cli-editar").onclick=()=>editar(principal());
+  $("#cfoto-btn").onclick=()=>{if(!principal()){editar(null);return}$("#cfoto-in").click()};
+  $("#cfoto-troca").onclick=()=>$("#cfoto-in").click();
+  $("#cfoto-rm").onclick=()=>{const c=principal();if(c){c.foto=null;salvar();renderMesaCli()}};
+  $("#cfoto-in").onchange=e=>{
+    const f=e.target.files[0];e.target.value="";const c=principal();if(!f||!c)return;
+    reduzir(f,u=>{c.foto=u;salvar();renderMesaCli()});
+  };
+
+  /* ---------- rotinas fixas aparecem em "Intenções de hoje" ---------- */
+  function rotinasNoFoco(){
+    const box=$("#intents");
+    box.querySelectorAll(".intent.rot,.rot-titulo").forEach(n=>n.remove());
+    if(!modo)return;
+    const c=principal();if(!c||!c.rotinas)return;
+    const dow=new Date().getDay();
+    const doDia=c.rotinas.filter(r=>r.d.includes(dow));
+    if(!doDia.length)return;
+    let feitas=store("mesa.rotfeitas");if(!feitas||feitas.dia!==hoje)feitas={dia:hoje,ids:[]};
+    const itens=[el("p",{class:"small rot-titulo",text:"Rotinas fixas de hoje"})];
+    doDia.forEach(r=>{
+      const chave=c.id+":"+r.id;
+      const cb=el("input",{type:"checkbox",class:"check","aria-label":"Rotina concluída"});cb.checked=feitas.ids.includes(chave);
+      const nome=r.u?el("a",{href:r.u,target:"_blank",rel:"noopener",class:"nome-rot",text:r.n}):el("span",{class:"nome-rot",text:r.n});
+      const row=el("div",{class:"intent rot"+(cb.checked?" done":"")},[el("span",{class:"num",text:"↻"}),nome,cb]);
+      cb.onchange=()=>{
+        feitas.ids=feitas.ids.filter(x=>x!==chave);if(cb.checked)feitas.ids.push(chave);
+        store("mesa.rotfeitas",feitas);row.classList.toggle("done",cb.checked);
+      };
+      itens.push(row);
+    });
+    box.prepend(...itens);
+  }
+
+  /* ---------- cartões na Mesa normal ---------- */
   function desenhar(){
     frames.replaceChildren();
     clientes.forEach(c=>{
@@ -600,6 +721,8 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
     const nova=el("button",{type:"button",class:"moldura","aria-label":"Nova cliente"},[el("span",{class:"passe",text:"+"})]);
     nova.onclick=()=>editar(null);
     frames.append(el("div",{class:"frame nova"},[nova,el("span",{class:"nome",text:"Nova cliente"})]));
+    if(modo)renderMesaCli();
+    rotinasNoFoco();
   }
 
   function mostrar(c){
@@ -614,6 +737,7 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
     det.append(el("h3",{text:c.name}),el("p",{class:"small",text:"★ = abre no “Abrir tudo”. Os outros ficam só nesta lista."}),ul,el("div",{class:"linha-btn"},[b,e]));
   }
 
+  /* ---------- formulário: nova cliente / editar ---------- */
   function editar(c){
     det.hidden=true;aberto=null;ed.replaceChildren();ed.hidden=false;
     const nome=el("input",{type:"text",class:"ed-nome",placeholder:"Nome da cliente","aria-label":"Nome da cliente"});nome.value=c?c.name:"";
@@ -635,6 +759,28 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
     SUG.forEach(sg=>{const ex=c&&c.links.find(l=>l.n.toLowerCase()===sg.toLowerCase());box.append(linha(sg,true,ex))});
     if(c)c.links.filter(l=>!SUG.some(sg=>sg.toLowerCase()===l.n.toLowerCase())).forEach(l=>box.append(linha("",false,l)));
     const mais=el("button",{type:"button",class:"link",text:"+ Adicionar link"});mais.onclick=()=>box.append(linha("",false,null));
+
+    /* rotinas fixas */
+    const rotLinhas=[];
+    function rotLinha(r){
+      const n=el("input",{type:"text",placeholder:"Ex.: Gerar as notas fiscais","aria-label":"Nome da rotina"});n.value=r?r.n:"";
+      const u=el("input",{type:"text",placeholder:"Link para abrir (opcional)","aria-label":"Link da rotina"});u.value=r&&r.u?r.u:"";
+      const dias=new Set(r?r.d:[]);
+      const wrap=el("div",{class:"dias"});
+      const pintaDias=()=>[...wrap.querySelectorAll(".dia")].forEach((b,i)=>b.setAttribute("aria-pressed",String(dias.has(i))));
+      DIAS.forEach((nm,i)=>{const b=el("button",{type:"button",class:"dia","aria-pressed":String(dias.has(i)),text:nm});b.onclick=()=>{dias.has(i)?dias.delete(i):dias.add(i);pintaDias()};wrap.append(b)});
+      const util=el("button",{type:"button",class:"link",text:"seg–sex"});util.onclick=()=>{[1,2,3,4,5].forEach(i=>dias.add(i));pintaDias()};
+      wrap.append(util);
+      const x=el("button",{type:"button",class:"x",text:"×","aria-label":"Remover rotina"});
+      const row=el("div",{class:"rot-row"},[n,u,x,wrap]);
+      const obj={id:r?r.id:novoId(),n,u,dias};
+      x.onclick=()=>{row.remove();rotLinhas.splice(rotLinhas.indexOf(obj),1)};
+      rotLinhas.push(obj);return row;
+    }
+    const rotBox=el("div",{class:"ed-lista"});
+    ((c&&c.rotinas)||[]).forEach(r=>rotBox.append(rotLinha(r)));
+    const maisRot=el("button",{type:"button",class:"link",text:"+ Adicionar rotina"});maisRot.onclick=()=>rotBox.append(rotLinha(null));
+
     const salvarB=el("button",{class:"btn",type:"button",text:"Salvar"});
     const cancelar=el("button",{class:"btn sec",type:"button",text:"Cancelar"});cancelar.onclick=()=>{ed.hidden=true};
     salvarB.onclick=()=>{
@@ -646,32 +792,47 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
         if(!url&&!rot)continue;
         if(!url){if(L.fixo)continue;aviso("Falta o endereço do link “"+rot+"”.");L.u.focus();return}
         if(!rot){aviso("Falta o nome de um dos links.");L.n.focus();return}
-        const ok=urlOk(/^[a-z][a-z0-9+.-]*:/i.test(url)?url:"https://"+url);
+        const ok=fixaUrl(url);
         if(!ok){aviso("O endereço de “"+rot+"” não parece um link válido.");L.u.focus();return}
         links.push({n:rot.slice(0,80),u:ok,s:L.estrela()});
       }
-      if(c){c.name=nm.slice(0,60);c.links=links}
-      else clientes.push({id:novoId(),name:nm.slice(0,60),cor:CORES[clientes.length%CORES.length],links});
+      const rotinas=[];
+      for(const R of rotLinhas){
+        const rn=R.n.value.trim(),ru=R.u.value.trim();
+        if(!rn&&!ru&&!R.dias.size)continue;
+        if(!rn){aviso("Falta o nome de uma rotina.");R.n.focus();return}
+        if(!R.dias.size){aviso("Marque pelo menos um dia para a rotina “"+rn+"”.");return}
+        let uu=null;
+        if(ru){uu=fixaUrl(ru);if(!uu){aviso("O link da rotina “"+rn+"” não parece válido.");R.u.focus();return}}
+        rotinas.push({id:R.id,n:rn.slice(0,80),d:[...R.dias].sort((a,b)=>a-b),u:uu});
+      }
+      if(c){c.name=nm.slice(0,60);c.links=links;c.rotinas=rotinas}
+      else clientes.push({id:novoId(),name:nm.slice(0,60),cor:CORES[clientes.length%CORES.length],links,rotinas,foto:null});
       salvar();desenhar();ed.hidden=true;aviso(c?"Cliente atualizada.":"Cliente criada.");
     };
     const botoes=[salvarB,cancelar];
     if(c){
       const ap=el("button",{class:"link",type:"button",text:"Apagar esta cliente"});
       ap.onclick=()=>{
-        if(!confirm("Apagar “"+c.name+"” deste navegador? Os links dela se perdem, a menos que você tenha uma cópia."))return;
+        if(!confirm("Apagar “"+c.name+"” deste navegador? Os links, as rotinas e a foto dela se perdem, a menos que você tenha uma cópia."))return;
         clientes=clientes.filter(x=>x!==c);salvar();desenhar();ed.hidden=true;
       };
       botoes.push(ap);
     }
     ed.append(el("h3",{text:c?"Editar "+c.name:"Nova cliente"}),
       el("p",{class:"small",text:"Preencha só o que ela usa. ★ = abre no “Abrir tudo” (se nenhum tiver estrela, abrem os 5 primeiros). Estes dados ficam só neste navegador."}),
-      nome,box,mais,el("div",{class:"linha-btn"},botoes));
+      nome,box,mais,
+      el("p",{class:"label",text:"Rotinas fixas"}),
+      el("p",{class:"small",text:"Aparecem em “Intenções de hoje” da Mesa da cliente, nos dias marcados (ex.: sexta = gerar as notas fiscais)."}),
+      rotBox,maisRot,
+      el("div",{class:"linha-btn"},botoes));
     nome.focus();
+    ed.scrollIntoView({behavior:"smooth",block:"start"});
   }
 
-  /* cópia de segurança */
+  /* ---------- cópia de segurança ---------- */
   $("#cli-baixar").onclick=()=>{
-    const blob=new Blob([JSON.stringify({versao:1,clientes},null,2)],{type:"application/json"});
+    const blob=new Blob([JSON.stringify({versao:2,clientes},null,2)],{type:"application/json"});
     const a=el("a",{href:URL.createObjectURL(blob),download:"clientes-mesa-revem.json"});document.body.append(a);a.click();a.remove();
   };
   $("#cli-rest").onchange=e=>{
@@ -682,7 +843,12 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
       if(!Array.isArray(lista)){aviso("Este arquivo não é uma cópia válida.");return}
       const limpo=lista.slice(0,100).filter(x=>x&&typeof x.name==="string"&&x.name.trim()).map((x,i)=>({
         id:novoId(),name:x.name.trim().slice(0,60),cor:CORES.includes(x.cor)?x.cor:CORES[i%CORES.length],
-        links:(Array.isArray(x.links)?x.links:[]).slice(0,60).map(l=>({n:String(l&&l.n||"").trim().slice(0,80),u:urlOk(l&&l.u||""),s:!!(l&&l.s)})).filter(l=>l.n&&l.u)
+        foto:(typeof x.foto==="string"&&/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(x.foto)&&x.foto.length<600000)?x.foto:null,
+        links:(Array.isArray(x.links)?x.links:[]).slice(0,60).map(l=>({n:String(l&&l.n||"").trim().slice(0,80),u:urlOk(l&&l.u||""),s:!!(l&&l.s)})).filter(l=>l.n&&l.u),
+        rotinas:(Array.isArray(x.rotinas)?x.rotinas:[]).slice(0,40).map(r=>({
+          id:String(r&&r.id||novoId()).slice(0,30),n:String(r&&r.n||"").trim().slice(0,80),
+          d:[...new Set((Array.isArray(r&&r.d)?r.d:[]).map(Number).filter(n=>Number.isInteger(n)&&n>=0&&n<=6))].sort((a,b)=>a-b),
+          u:r&&r.u?urlOk(r.u):null})).filter(r=>r.n&&r.d.length)
       }));
       if(!limpo.length){aviso("A cópia não tem nenhuma cliente.");return}
       if(!confirm("Isto substitui as "+clientes.length+" cliente(s) deste navegador por "+limpo.length+" da cópia. Continuar?"))return;
@@ -690,9 +856,15 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
     });
   };
 
-  /* modo "perfil de cliente": esconde as guias gerais e os atalhos pessoais */
-  const cb=$("#modo-cli");let modo=store("mesa.modoCliente")===true;
-  function aplicarModo(){$("#atalhos").hidden=modo;$("#sec-guias").hidden=modo;$("#edit").hidden=modo;cb.checked=modo}
+  /* ---------- modo "Mesa da cliente": mostra só o que é do trabalho para ela ---------- */
+  const cb=$("#modo-cli");
+  function aplicarModo(){
+    ["#atalhos","#sec-guias","#sec-cli",".hero","#agua","#edit"].forEach(sel=>{const e=document.querySelector(sel);if(e)e.hidden=modo});
+    $("#mesa-cli").hidden=!modo;cb.checked=modo;
+    if(modo){$("#bank").hidden=true;renderMesaCli()}
+    else{window.tituloBase=null;if(!window.mesaOcupada)document.title="Mesa Révem"}
+    rotinasNoFoco();
+  }
   cb.onchange=()=>{modo=cb.checked;store("mesa.modoCliente",modo);aplicarModo()};
   aplicarModo();desenhar();
 })();
