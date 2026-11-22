@@ -5,13 +5,19 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>Mesa Révem</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap">
 <style>
-/* Paleta Révem: grafite #393b36, cinza #606062, terracota #aa5f38, azul-gelo #d5e3ec, areia #f1eee8 */
+/* Paleta Révem: grafite #393b36, cinza #606062, terracota #aa5f38, azul-gelo #f4ecd0, areia #f1eee8 */
 :root{
-  --areia:#f1eee8; --grafite:#393b36; --cinza:#606062; --terracota:#aa5f38; --gelo:#d5e3ec;
-  --papel:#f8f6f1; --linha:#d9d2c4; --linha-forte:#b9b0a0;
-  --serif:"Cormorant Garamond","Georgia",serif; --sans:"Jost","Segoe UI",system-ui,sans-serif;
+  /* tokens do Prédio Révem */
+  --bg:#f1eee8; --floor:#ece6dc; --card:#faf8f4; --ink:#393b36; --muted:#6d6a63;
+  --terra:#aa5f38; --terra-deep:#8c4a2a; --peach:#f6dcc7; --line:rgba(57,59,54,.16); --shadow:rgba(42,26,18,.12);
+  --ok:#5f7a4a; --warn:#b07a1f; --grain:.2; --cork:#d9b98f;
+  --display:"Playfair Display",Georgia,serif; --body:"Plus Jakarta Sans",system-ui,sans-serif; --hand:var(--body);
+  /* nomes antigos da Mesa apontando para os tokens novos (assim tudo acompanha) */
+  --areia:var(--bg); --grafite:var(--ink); --cinza:var(--muted); --terracota:var(--terra); --gelo:#c3dbe8;
+  --papel:var(--card); --linha-forte:rgba(57,59,54,.30);
+  --serif:var(--display); --sans:var(--body);
 }
 *{box-sizing:border-box}
 body{margin:0;color:var(--grafite);font-family:var(--sans);font-weight:400;font-size:15px;line-height:1.5;
@@ -242,6 +248,206 @@ footer p{margin:0;max-width:64ch}
 .ed-slack{border:0;border-bottom:1px solid var(--linha-forte);background:transparent;padding:6px 2px;width:100%;min-width:0}
 .ed-slack:focus{outline:none;border-bottom-color:var(--terracota)}
 .hoje.so-ritmo{grid-template-columns:minmax(0,820px)}
+
+/* ===== visual do Prédio Révem (prévia) ===== */
+html,body{background:var(--bg)}
+body{background-image:none;font-family:var(--body);font-weight:400}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:var(--grain);mix-blend-mode:multiply;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .3  0 0 0 0 .22  0 0 0 0 .16  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+:focus-visible{outline:2px solid var(--terra);outline-offset:3px}
+a{color:var(--terra-deep)}
+.eyebrow,.label{font-size:11px;letter-spacing:.14em;color:var(--muted);font-weight:600}
+.small,.hint,.tag{color:var(--muted);font-weight:400}
+.sec-h{font-family:var(--display);font-weight:500;font-size:clamp(25px,3.4vw,31px);line-height:1.1;margin:0 0 12px;color:var(--ink)}
+.sec-h em{color:var(--terra);font-weight:400;font-style:italic}
+.sub .sec-h{margin:0}
+/* títulos e letras */
+.hello h1{font-family:var(--display);font-style:italic;font-weight:400;color:var(--terra-deep);font-size:clamp(30px,4.4vw,44px);line-height:1.05}
+#cli-nome{font-family:var(--display);font-style:italic;font-weight:400;color:var(--terra-deep);font-size:clamp(34px,5vw,52px);line-height:1.05}
+.q-text{font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(19px,2.2vw,24px);line-height:1.3}
+.q-by{font-weight:600;letter-spacing:.14em}
+.bank-item q{font-family:var(--display);font-style:italic;font-size:18px}
+.atalho strong,.tile strong,.frame .nome{font-family:var(--display);font-weight:500}
+.atalho strong{font-size:17px}
+.tile strong{font-size:22px;line-height:1.1}
+.frame .nome{font-size:17px}
+.detalhe h3{font-family:var(--display);font-weight:500;font-size:22px}
+.ed-nome{font-family:var(--display);font-style:italic;font-weight:400;font-size:24px}
+.ed-area-nome{font-family:var(--display);font-weight:500;font-size:19px}
+.clock{font-family:var(--display);font-weight:500;font-size:clamp(42px,6vw,54px)}
+.num,.nome-rot{font-family:var(--display)}
+.num{font-size:20px}
+.nome-rot,.intent input[type=text]{font-size:17px}
+.frame .passe,.moldura-foto .foto-vazio.inicial{font-family:var(--display)}
+.fim{font-family:var(--display);font-size:19px}
+.tile .n{font-family:var(--hand);font-size:17px;letter-spacing:0;font-weight:500;text-transform:none;opacity:.8}
+.tile .go{letter-spacing:.12em;font-weight:600}
+#aguaTxt{font-family:var(--hand);font-size:19px;color:var(--ink)}
+.rot-titulo{font-family:var(--hand);font-size:19px;color:var(--terra-deep)}
+/* botões em pílula */
+.btn{border-radius:999px;padding:8px 16px;font-size:13px;font-weight:500;letter-spacing:0;text-transform:none;border:1px solid var(--terra);background:var(--terra);color:var(--bg)}
+.btn:hover{background:var(--terra-deep);border-color:var(--terra-deep);color:var(--bg)}
+.btn.sec{background:transparent;color:var(--terra-deep);border-color:var(--terra)}
+.btn.sec:hover{background:var(--terra);color:var(--bg);border-color:var(--terra)}
+.btn.peq{padding:5px 12px;font-size:12px}
+.ghost{border-radius:999px;border:1px solid var(--terra);color:var(--terra-deep);padding:7px 14px;font-size:13px;font-weight:500;letter-spacing:0;text-transform:none}
+.ghost:hover{background:var(--terra);color:var(--bg)}
+.pill,.dia{border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--muted);font-size:12px;letter-spacing:0;text-transform:none;font-weight:500;padding:5px 12px}
+.pill:hover,.dia:hover{border-color:var(--terra);color:var(--terra-deep)}
+.pill[aria-pressed=true],.dia[aria-pressed=true]{background:var(--terra);color:var(--bg);border-color:var(--terra)}
+.link{color:var(--terra-deep)}
+/* cartões */
+.tile{border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 18px -12px var(--shadow)}
+.tile:hover{border-color:var(--terra);transform:translateY(-2px);box-shadow:0 14px 24px -14px var(--shadow)}
+.tile:active{transform:none;box-shadow:0 8px 18px -12px var(--shadow)}
+.tile-main:focus-visible{outline-offset:-5px;border-radius:14px}
+.atalho{border:1px solid var(--line);border-left:4px solid var(--terra);border-radius:10px;box-shadow:none;background:var(--card)}
+.atalho:hover{border-color:var(--terra);transform:translateY(-1px);box-shadow:0 10px 20px -14px var(--shadow)}
+.atalho:active{transform:none;box-shadow:none}
+.atalho[aria-disabled=true]{box-shadow:none}
+.capa{border-radius:8px}
+.box,.detalhe,.bank{border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 18px -14px var(--shadow)}
+.ed-area{border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.frame .moldura{border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 16px -10px var(--shadow)}
+.frame .moldura:hover{border-color:var(--terra);transform:translateY(-2px);box-shadow:0 12px 20px -12px var(--shadow)}
+.frame .passe{border-radius:6px;border-color:var(--line)}
+.frame.nova .moldura{box-shadow:none}
+.moldura-foto{border:1px solid var(--line);border-radius:14px;box-shadow:0 14px 26px -16px var(--shadow)}
+.moldura-foto img{border-radius:8px;border-color:var(--line)}
+.foto-vazio{border-radius:8px}
+.toast{background:var(--peach);border:1px solid var(--terra);color:var(--ink);border-radius:10px}
+.check{border-color:var(--ink)}
+.glasses i{border-color:var(--ink)}
+
+/* ===== opção C: cartões neutros, cor só numa faixa no topo ===== */
+.tile{background:var(--card);overflow:hidden}
+.tile::before{content:"";position:absolute;left:0;right:0;top:0;height:9px;background:var(--cor)}
+.tile-main{padding-top:24px}
+.tile .n{opacity:.7}
+
+/* ícones em traço */
+.ico{display:inline-block;flex:none}
+.ico svg{width:100%;height:100%;display:block;overflow:visible}
+.ico .i-f{fill:var(--card);stroke:var(--muted);stroke-width:3;stroke-linejoin:round}
+.ico .i-p{fill:var(--peach);stroke:var(--muted);stroke-width:2.6;stroke-linejoin:round}
+.ico .i-a{fill:var(--terra);stroke:none}
+.ico .i-l{fill:none;stroke:var(--muted);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.ico .i-l2{fill:none;stroke:var(--muted);stroke-width:2.6}
+.ic-tile{position:absolute;top:12px;right:12px;width:50px;height:42px}
+.tile-main strong,.tile-main small{padding-right:44px}
+.ic-atalho{width:42px;height:35px}
+.ic-area{width:36px;height:30px}
+
+/* ===== brandbook Révem (22/11/2026) ===== */
+:root{
+  --off-white:#f1eee8; --papel:#f8f5ef; --branco:#ffffff; --grafite:#393b36; --cinza:rgba(57,59,54,.78);
+  --destaque:#8c4a2a; --terracota:#aa5f38; --pessego:#f6dcc7; --azul:#d5e3ec; --marrom:#2a1a12; --linha:rgba(57,59,54,.2);
+  --space-1:8px; --space-2:16px; --space-3:24px; --space-4:48px; --space-5:72px;
+  --sombra-polaroid:0 1px 2px rgba(42,26,18,.12),0 14px 34px -14px rgba(42,26,18,.38);
+  --bg:var(--off-white); --card:var(--papel); --ink:var(--grafite); --muted:var(--cinza);
+  --terra:var(--terracota); --terra-deep:var(--destaque); --peach:var(--pessego); --line:var(--linha);
+  --areia:var(--off-white); --linha-forte:rgba(57,59,54,.3); --gelo:var(--pessego);
+  --body:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif; --display:"Playfair Display",Georgia,serif;
+  --sans:var(--body); --serif:var(--display); --grain:.12;
+}
+html,body{background:var(--off-white)}
+body{font-family:var(--body);font-size:15px;font-weight:400;line-height:1.55;color:var(--grafite);padding:28px clamp(20px,4vw,48px) 64px}
+.wrap{gap:var(--space-4)}
+.logo{height:46px}
+:focus-visible{outline:2px solid var(--destaque);outline-offset:3px}
+a{color:var(--destaque)}
+.link{color:var(--destaque)}
+/* letras */
+.eyebrow{font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--cinza)}
+.label{font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--destaque)}
+.small,.tag,.hint{color:var(--cinza);font-weight:400}
+.sec-h{font-family:var(--body);font-weight:300;font-size:clamp(26px,3.2vw,34px);letter-spacing:-.015em;line-height:1.12;color:var(--grafite);margin:0 0 var(--space-2)}
+.sub .sec-h{margin:0}
+.sec-h em,.hello h1 em,#cli-nome em{font-family:var(--display);font-style:italic;font-weight:400;color:var(--destaque)}
+.hello h1{font-family:var(--body);font-style:normal;font-weight:300;color:var(--grafite);font-size:clamp(34px,5vw,46px);letter-spacing:-.02em;line-height:1.07}
+#cli-nome{font-family:var(--body);font-style:normal;font-weight:300;color:var(--grafite);font-size:clamp(36px,5.4vw,52px);letter-spacing:-.02em;line-height:1.07}
+.eve-nome{font-family:var(--display)!important;font-style:italic;font-weight:400!important;color:var(--destaque)!important;font-size:17px!important}
+/* frase do dia: sem faixa na borda */
+.quote{border:0;padding:0;gap:var(--space-1)}
+.quote::before{content:"\201C";font-family:var(--display);font-style:italic;font-size:60px;line-height:.5;height:24px;color:var(--destaque)}
+.q-text{font-family:var(--body);font-style:normal;font-weight:300;font-size:clamp(19px,2.2vw,24px);line-height:1.4;color:var(--grafite)}
+.q-text::placeholder,.q-by::placeholder{font-style:normal;color:rgba(57,59,54,.5)}
+.q-by{font-size:11px;font-weight:500;letter-spacing:.2em;color:var(--cinza)}
+.bank-item q{font-family:var(--body);font-style:normal;font-weight:300;font-size:17px}
+/* botões em pílula: principal em destaque */
+.btn{background:var(--destaque);border:1px solid var(--destaque);color:var(--off-white);border-radius:999px;font-size:13px;font-weight:500;padding:8px 16px;letter-spacing:0;text-transform:none}
+.btn:hover{background:transparent;color:var(--destaque);border-color:var(--destaque)}
+.btn.sec,.ghost{background:transparent;color:var(--destaque);border:1px solid var(--destaque);border-radius:999px;font-size:13px;font-weight:500;letter-spacing:0;text-transform:none}
+.btn.sec:hover,.ghost:hover{background:var(--pessego);color:var(--destaque)}
+.pill,.dia{border-radius:999px;border:1px solid var(--linha);background:var(--papel);color:var(--cinza);font-size:12px;font-weight:500;letter-spacing:0;text-transform:none;padding:5px 12px}
+.pill:hover,.dia:hover{border-color:var(--destaque);color:var(--destaque)}
+.pill[aria-pressed=true],.dia[aria-pressed=true]{background:var(--pessego);border-color:var(--destaque);color:var(--destaque)}
+/* cartões: borda, nunca sombra; canto de 6px */
+.tile{background:var(--papel);border:1px solid var(--linha);border-radius:6px;box-shadow:none;overflow:visible}
+.tile::before{display:none}
+.tile:hover{border-color:var(--destaque);transform:none;box-shadow:none}
+.tile:active{transform:none;box-shadow:none}
+.tile-main{padding:var(--space-3) var(--space-3) 40px;min-height:150px}
+.tile-main:focus-visible{border-radius:6px}
+.tile .n{font-family:var(--body);font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--cinza);opacity:1}
+.tile strong{font-family:var(--body);font-weight:400;font-size:22px;letter-spacing:-.005em;line-height:1.2;color:var(--grafite)}
+.tile small{color:var(--cinza);opacity:1;font-size:13px}
+.tile .go{font-size:11px;font-weight:500;letter-spacing:.2em;color:var(--destaque)}
+.tile .go b{color:var(--destaque)}
+.tile .go .cnt{display:block;margin-top:2px;color:var(--cinza);font-size:12px;font-weight:400;letter-spacing:.02em;text-transform:none}
+.tile-links{color:var(--cinza);opacity:1}
+.tile-links:hover{color:var(--destaque)}
+.ic-tile{top:var(--space-3);right:var(--space-3);width:48px;height:48px}
+.tile-main strong,.tile-main small{padding-right:60px}
+.atalho{background:var(--papel);border:1px solid var(--linha);border-radius:6px;box-shadow:none}
+.atalho:hover{border-color:var(--destaque);transform:none;box-shadow:none}
+.atalho:active{transform:none}
+.atalho strong{font-family:var(--body);font-weight:500;font-size:15px;color:var(--grafite)}
+.atalho small{color:var(--cinza)}
+.atalho .seta{color:var(--destaque);font-family:var(--body)}
+.ic-atalho{width:32px;height:32px}
+.ic-area{width:32px;height:32px}
+.ico{display:inline-block;flex:none}
+.ico svg{width:100%;height:100%;display:block}
+.capa{border-radius:0;background:var(--pessego)}
+.box,.detalhe,.bank{background:var(--papel);border:1px solid var(--linha);border-radius:6px;box-shadow:none}
+.ed-area{background:transparent;border:0;border-top:1px solid var(--linha);border-radius:0;padding:var(--space-2) 0}
+.detalhe h3{font-family:var(--body);font-weight:400;font-size:22px}
+.ed-nome{font-family:var(--body);font-style:normal;font-weight:300;font-size:26px}
+.ed-area-nome{font-family:var(--body);font-weight:400;font-size:17px}
+/* as clientes: cartão simples, sem moldura de polaroid */
+.frame .moldura{background:var(--papel);border:1px solid var(--linha);border-radius:6px;box-shadow:none;padding:0;overflow:hidden}
+.frame .moldura:hover{border-color:var(--destaque);transform:none;box-shadow:none}
+.frame .passe{background:var(--pessego);border:0;border-radius:0;font-family:var(--body);font-style:normal;font-weight:300;font-size:44px;color:var(--destaque)}
+.frame.nova .moldura{background:transparent;border-style:dashed}
+.frame.nova .passe{background:transparent;color:var(--cinza)}
+.frame .nome{font-family:var(--body);font-weight:400;font-size:15px;padding-top:var(--space-1)}
+/* polaroid: só a foto da Maressa e a logo da cliente */
+.moldura-foto{background:var(--branco);border:0;border-radius:0;padding:12px 12px 40px;box-shadow:var(--sombra-polaroid);transform:rotate(-2deg);width:236px}
+.moldura-foto::before{content:"";position:absolute;top:-10px;left:50%;width:84px;height:22px;margin-left:-42px;background:var(--pessego);opacity:.9;transform:rotate(3deg)}
+.moldura-foto img{border:0;border-radius:0}
+.foto-vazio{background:var(--off-white);border:1px dashed var(--linha);border-radius:0;color:var(--cinza)}
+.moldura-foto .foto-vazio.inicial{font-family:var(--body);font-style:normal;font-weight:300;color:var(--destaque)}
+.retrato{padding-top:var(--space-1)}
+/* ritmo do dia, intenções, aviso: sem letra de mão */
+.clock{font-family:var(--body);font-weight:300;font-size:clamp(42px,6vw,54px);letter-spacing:-.02em}
+.num{font-family:var(--body);font-style:normal;font-weight:300;font-size:16px;color:var(--destaque)}
+.nome-rot,.intent input[type=text]{font-family:var(--body);font-size:15px;font-weight:400}
+.intent input[type=text]::placeholder{font-style:normal;color:rgba(57,59,54,.5)}
+.fim{font-family:var(--body);font-size:15px;font-style:normal;color:var(--destaque)}
+#aguaTxt{font-family:var(--body);font-size:13px;color:var(--cinza)}
+.rot-titulo{font-family:var(--body);font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--destaque)}
+.check{border-color:var(--cinza)}
+.check::after{background:var(--destaque)}
+.check:checked{border-color:var(--destaque)}
+.dots i{border-color:var(--destaque)}
+.dots i.on{background:var(--destaque)}
+.glasses i{border-color:var(--cinza);background:linear-gradient(to top,var(--pessego) var(--f),transparent var(--f))}
+.toast{background:var(--pessego);border:1px solid var(--linha);color:var(--grafite);border-radius:10px}
+footer{border-top:1px solid var(--linha)}
+.star,.x{color:var(--destaque)}
+.nome-btn{color:var(--destaque);font-weight:500;letter-spacing:.2em}
+.mv button{color:var(--cinza)}
+.mv button:hover{color:var(--destaque)}
 </style>
 </head>
 <body>
@@ -269,13 +475,13 @@ footer p{margin:0;max-width:64ch}
   <nav class="atalhos" aria-label="Atalhos do dia" id="atalhos"></nav>
 
   <section aria-labelledby="h-comecar" id="sec-guias">
-    <p class="label" id="h-comecar">Começar por aqui</p>
+    <h2 class="sec-h" id="h-comecar">Começar por <em>aqui</em></h2>
     <div class="tiles" id="modes"></div>
     <div class="detalhe" id="det-modo" hidden></div>
   </section>
 
   <section aria-labelledby="h-cli" id="sec-cli">
-    <div class="sub com-tools"><p class="label" id="h-cli">Clientes</p>
+    <div class="sub com-tools"><h2 class="sec-h" id="h-cli">As <em>clientes</em></h2>
       <span class="cli-tools small"><button type="button" class="link" id="cli-baixar">Baixar cópia</button> · <label class="link" for="cli-rest">Restaurar cópia</label><input type="file" id="cli-rest" accept=".json,application/json" hidden></span></div>
     <div class="frames" id="frames"></div>
     <div class="detalhe" id="det-cli" hidden></div>
@@ -301,11 +507,11 @@ footer p{margin:0;max-width:64ch}
 
   <section class="hoje so-ritmo" id="sec-hoje" aria-label="Hoje">
     <div id="col-int" hidden>
-      <p class="label">Intenções de hoje</p>
+      <h2 class="sec-h">Intenções de <em>hoje</em></h2>
       <div class="box" id="intents"></div>
     </div>
     <div>
-      <p class="label">Ritmo do dia</p>
+      <h2 class="sec-h">Ritmo do <em>dia</em></h2>
       <div style="display:flex;flex-direction:column;gap:12px">
         <div class="box" id="pomo">
           <div class="p-top">
@@ -352,21 +558,21 @@ footer p{margin:0;max-width:64ch}
 const ME="contato@gestaorevem.com.br";
 const SP_URL="https://open.spotify.com/playlist/06I8h0N5ccb1MPJpTEAOqd";
 const MODES=[
- {name:"Rotina",tag:"Ligado o dia todo",cor:"#e4dccb",links:[
+ {name:"Rotina",tag:"Ligado o dia todo",cor:"#f6e0cf",links:[
   ["Notion · Ateliê de Gestão","https://www.notion.so/maressaalmeida/R-vem-I-Ateli-de-Gest-o-c130d5fe979845bf83b065986a6eb4b9"],
   ["Notion Calendar","https://calendar.notion.so/"],
   ["Gmail Révem","https://mail.google.com/mail/?authuser="+ME],
   ["WhatsApp Web","https://web.whatsapp.com/"],
   ["Drive Révem","https://drive.google.com/drive/my-drive?authuser="+ME],
   ["Trello · Maressa Almeida Révem","https://trello.com/b/vvEQAgT3/maressa-almeida-revem"]]},
- {name:"Vendas e atendimento",tag:"Reunião de venda, leads e clientes",cor:"#e6c8b6",links:[
+ {name:"Vendas e atendimento",tag:"Reunião de venda, leads e clientes",cor:"#f4d6cf",links:[
   ["Calendly","https://calendly.com/event_types/user/me"],
   ["tl;dv · Reuniões","https://tldv.io/app/meetings"],
   ["Tally","https://tally.so/dashboard"],
   ["Jotform","https://www.jotform.com/pt/myforms/"],
   ["Mailchimp · Campanhas","https://us1.admin.mailchimp.com/campaigns/"],
   ["Zapier","https://zapier.com/app/home"]]},
- {name:"Criar",tag:"Conteúdo, estratégia e materiais",cor:"#d5e3ec",links:[
+ {name:"Criar",tag:"Conteúdo, estratégia e materiais",cor:"#f4ecd0",links:[
   ["Claude","https://claude.ai/"],
   ["ChatGPT","https://chat.openai.com/"],
   ["Canva","https://www.canva.com/"],
@@ -374,22 +580,43 @@ const MODES=[
   ["Meta Business Suite","https://business.facebook.com/latest/home"],
   ["Loom","https://www.loom.com/looms"],
   ["Perplexity","https://www.perplexity.ai/"]]},
- {name:"Financeiro",tag:"Caixa, cobrança e notas",cor:"#cfcdc4",links:[
+ {name:"Financeiro",tag:"Caixa, cobrança e notas",cor:"#dbe9d0",links:[
   ["Révem · Gestão (só abre se estiver ligado no seu computador)","http://127.0.0.1:3737"],
   ["Banco Inter","https://internetbanking.bancointer.com.br/comum/home.jsf"],
   ["Asaas","https://www.asaas.com/dashboard/index"],
   ["Greenn · Dashboard","https://adm.greenn.com.br/dashboard"],
   ["NFS-e · Emissor nacional","https://www.nfse.gov.br/EmissorNacional/"],
   ["PGMEI · DAS","http://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgmei.app/"]]},
- {name:"Estudo",tag:"Uma plataforma por vez",cor:"#dcd2c0",links:[
+ {name:"Estudo",tag:"Uma plataforma por vez",cor:"#eadcc3",links:[
   ["Conquer · Pós","https://app.escolaconquer.com.br/meus-cursos"],
   ["Conquer+","https://conquerplus.com.br/home"],
   ["Adapta · Alunos","https://alunos.adapta.org/area/vitrine"]]}
 ];
+/* ícones oficiais da Révem (Marca Révem/Ícones): grande com reflexo pêssego (48px+), pequeno só a linha (até 32px) */
+const ICONES={"Administrativo": {"g": "<g fill=\"#f6dcc7\" fill-opacity=\".55\"><rect x=\"20\" y=\"50\" width=\"36\" height=\"24\" rx=\"1\"/></g><g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14 30h24l6 6h40v42H14z\"/><path d=\"M14 44h70\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M24 56h22\"/></g>", "p": "<g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14 30h24l6 6h40v42H14z\"/><path d=\"M14 44h70\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"3.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M24 56h22\"/></g>"}, "Arquivo": {"g": "<g fill=\"#f6dcc7\" fill-opacity=\".55\"><rect x=\"24\" y=\"41\" width=\"56\" height=\"21\" rx=\"1\"/></g><g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"20\" y=\"14\" width=\"60\" height=\"70\" rx=\"3\"/><path d=\"M20 37h60M20 60h60\"/><path d=\"M42 24h16M42 70h16\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M42 47h16\"/></g>", "p": "<g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"20\" y=\"14\" width=\"60\" height=\"70\" rx=\"3\"/><path d=\"M20 37h60M20 60h60\"/><path d=\"M42 24h16M42 70h16\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"3.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M42 47h16\"/></g>"}, "Atelie": {"g": "<g fill=\"#f6dcc7\" fill-opacity=\".55\"><rect x=\"30\" y=\"18\" width=\"44\" height=\"34\" rx=\"1\"/></g><g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"26\" y=\"14\" width=\"48\" height=\"36\" rx=\"1\"/><path d=\"M50 50v34M38 50l-10 34M62 50l10 34\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M36 34c4-5 8-5 11 0 3-5 7-5 11 0\"/></g>", "p": "<g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"26\" y=\"14\" width=\"48\" height=\"36\" rx=\"1\"/><path d=\"M50 50v34M38 50l-10 34M62 50l10 34\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"3.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M36 34c4-5 8-5 11 0 3-5 7-5 11 0\"/></g>"}, "Clientes": {"g": "<g fill=\"#f6dcc7\" fill-opacity=\".55\"><circle cx=\"43\" cy=\"41\" r=\"12.5\"/></g><g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M56 60c3-8 9-13 16-13 9 0 15 8 17 22\"/><circle cx=\"71\" cy=\"33\" r=\"10\"/><path d=\"M16 82c1-15 11-26 24-26 9 0 16 5 20 12l10-3-6 9\"/><circle cx=\"40\" cy=\"38\" r=\"12.5\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M35.5 38.5a4.5 4.5 0 0 0 9 0\"/></g>", "p": "<g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M56 60c3-8 9-13 16-13 9 0 15 8 17 22\"/><circle cx=\"71\" cy=\"33\" r=\"10\"/><path d=\"M16 82c1-15 11-26 24-26 9 0 16 5 20 12l10-3-6 9\"/><circle cx=\"40\" cy=\"38\" r=\"12.5\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"3.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M35.5 38.5a4.5 4.5 0 0 0 9 0\"/></g>"}, "Comercial": {"g": "<g fill=\"#f6dcc7\" fill-opacity=\".55\"><path d=\"M50 56h10v22l-10-5z\"/></g><g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M16 22h68L56 52v24l-14-7V52z\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"49\" cy=\"86\" r=\"4\"/></g>", "p": "<g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M16 22h68L56 52v24l-14-7V52z\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"3.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"49\" cy=\"86\" r=\"4\"/></g>"}, "Educacao": {"g": "<g fill=\"#f6dcc7\" fill-opacity=\".55\"><rect x=\"34\" y=\"40\" width=\"12\" height=\"40\" rx=\"1\"/></g><g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"16\" y=\"36\" width=\"12\" height=\"42\" rx=\"1\"/><rect x=\"30\" y=\"44\" width=\"12\" height=\"34\" rx=\"1\"/><path d=\"M46 78l8-38 11 2-8 38z\"/><rect x=\"66\" y=\"40\" width=\"12\" height=\"38\" rx=\"1\"/><path d=\"M10 80h80\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14 24c6-6 12-6 18 0s12 6 18 0 12-6 18 0 12 6 18 0\"/></g>", "p": "<g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"16\" y=\"36\" width=\"12\" height=\"42\" rx=\"1\"/><rect x=\"30\" y=\"44\" width=\"12\" height=\"34\" rx=\"1\"/><path d=\"M46 78l8-38 11 2-8 38z\"/><rect x=\"66\" y=\"40\" width=\"12\" height=\"38\" rx=\"1\"/><path d=\"M10 80h80\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"3.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14 24c6-6 12-6 18 0s12 6 18 0 12-6 18 0 12 6 18 0\"/></g>"}, "Empresa": {"g": "<g fill=\"#f6dcc7\" fill-opacity=\".55\"><rect x=\"30\" y=\"26\" width=\"38\" height=\"24\" rx=\"2\"/></g><g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"14\" y=\"16\" width=\"70\" height=\"44\" rx=\"3\"/><path d=\"M49 60v12M34 76h30\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M36 38l9 9 18-17\"/></g>", "p": "<g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"14\" y=\"16\" width=\"70\" height=\"44\" rx=\"3\"/><path d=\"M49 60v12M34 76h30\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"3.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M36 38l9 9 18-17\"/></g>"}, "Entregas": {"g": "<g fill=\"#f6dcc7\" fill-opacity=\".55\"><rect x=\"18\" y=\"44\" width=\"40\" height=\"32\" rx=\"2\"/></g><g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"14\" y=\"40\" width=\"40\" height=\"32\" rx=\"2\"/><path d=\"M14 52h40M34 40v12\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M64 46l22 10-22 10M64 56h14\"/></g>", "p": "<g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"14\" y=\"40\" width=\"40\" height=\"32\" rx=\"2\"/><path d=\"M14 52h40M34 40v12\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"3.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M64 46l22 10-22 10M64 56h14\"/></g>"}, "Escritorio-Maressa": {"g": "<g fill=\"#f6dcc7\" fill-opacity=\".55\"><rect x=\"28\" y=\"40\" width=\"30\" height=\"20\" rx=\"2\"/></g><g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 62h76M20 62v22M80 62v22\"/><rect x=\"24\" y=\"36\" width=\"30\" height=\"20\" rx=\"2\"/><path d=\"M30 44h18M30 50h12\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M62 56a10 10 0 0 1 20 0M72 38v5M60 42l3 3M84 42l-3 3\"/></g>", "p": "<g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 62h76M20 62v22M80 62v22\"/><rect x=\"24\" y=\"36\" width=\"30\" height=\"20\" rx=\"2\"/><path d=\"M30 44h18M30 50h12\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"3.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M62 56a10 10 0 0 1 20 0M72 38v5M60 42l3 3M84 42l-3 3\"/></g>"}, "Eve": {"g": "<g fill=\"#f6dcc7\" fill-opacity=\".55\"><circle cx=\"42\" cy=\"38\" r=\"15\"/></g><g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"38\" cy=\"34\" r=\"15\"/><path d=\"M26 28c4-10 18-12 24-2\"/><path d=\"M12 84c2-16 13-26 26-26s24 10 26 26\"/><path d=\"M60 22h26v18H70l-6 6v-6h-4z\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M32 36a3.5 3.5 0 0 0 7 0M42 36a3.5 3.5 0 0 0 7 0\"/></g>", "p": "<g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"38\" cy=\"34\" r=\"15\"/><path d=\"M26 28c4-10 18-12 24-2\"/><path d=\"M12 84c2-16 13-26 26-26s24 10 26 26\"/><path d=\"M60 22h26v18H70l-6 6v-6h-4z\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"3.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M32 36a3.5 3.5 0 0 0 7 0M42 36a3.5 3.5 0 0 0 7 0\"/></g>"}, "Gestao": {"g": "<g fill=\"#f6dcc7\" fill-opacity=\".55\"><circle cx=\"53\" cy=\"53\" r=\"15\"/></g><g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"50\" cy=\"50\" r=\"36\"/><circle cx=\"50\" cy=\"50\" r=\"15\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M19 37 50 50l33-8\"/></g>", "p": "<g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"50\" cy=\"50\" r=\"36\"/><circle cx=\"50\" cy=\"50\" r=\"15\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"3.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M19 37 50 50l33-8\"/></g>"}, "Implementacao": {"g": "<g fill=\"#f6dcc7\" fill-opacity=\".55\"><circle cx=\"54\" cy=\"54\" r=\"9\"/></g><g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M50 16a34 34 0 1 1-24 10\"/><circle cx=\"50\" cy=\"50\" r=\"8\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M28.8 31.6L30.2 21.8L20.4 23.2\"/></g>", "p": "<g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M50 16a34 34 0 1 1-24 10\"/><circle cx=\"50\" cy=\"50\" r=\"8\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"3.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M28.8 31.6L30.2 21.8L20.4 23.2\"/></g>"}, "Marcos": {"g": "<g fill=\"#f6dcc7\" fill-opacity=\".55\"><rect x=\"22\" y=\"30\" width=\"38\" height=\"24\" rx=\"2\"/></g><g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"18\" y=\"26\" width=\"38\" height=\"26\" rx=\"2\"/><path d=\"M12 60h50l-4-8H16z\"/><path d=\"M68 50h14v14a7 7 0 0 1-14 0zM82 54h4a4 4 0 0 1 0 8h-4\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M73 42c-3-4 3-6 0-10M78 42c-3-4 3-6 0-10\"/></g>", "p": "<g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"18\" y=\"26\" width=\"38\" height=\"26\" rx=\"2\"/><path d=\"M12 60h50l-4-8H16z\"/><path d=\"M68 50h14v14a7 7 0 0 1-14 0zM82 54h4a4 4 0 0 1 0 8h-4\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"3.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M73 42c-3-4 3-6 0-10M78 42c-3-4 3-6 0-10\"/></g>"}, "Marketing-Notion": {"g": "<g fill=\"#f6dcc7\" fill-opacity=\".55\"><rect x=\"26\" y=\"32\" width=\"18\" height=\"14\" rx=\"1\"/></g><g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"12\" y=\"16\" width=\"76\" height=\"56\" rx=\"3\"/><rect x=\"22\" y=\"28\" width=\"18\" height=\"14\" rx=\"1\"/><rect x=\"48\" y=\"26\" width=\"18\" height=\"14\" rx=\"1\"/><rect x=\"34\" y=\"50\" width=\"18\" height=\"14\" rx=\"1\"/><path d=\"M28 72v10M72 72v10\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"57\" cy=\"26\" r=\"3\"/><path d=\"M57 29v4\"/></g>", "p": "<g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"12\" y=\"16\" width=\"76\" height=\"56\" rx=\"3\"/><rect x=\"22\" y=\"28\" width=\"18\" height=\"14\" rx=\"1\"/><rect x=\"48\" y=\"26\" width=\"18\" height=\"14\" rx=\"1\"/><rect x=\"34\" y=\"50\" width=\"18\" height=\"14\" rx=\"1\"/><path d=\"M28 72v10M72 72v10\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"3.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"57\" cy=\"26\" r=\"3\"/><path d=\"M57 29v4\"/></g>"}, "Predio": {"g": "<g fill=\"#f6dcc7\" fill-opacity=\".55\"><rect x=\"32\" y=\"44\" width=\"40\" height=\"12\" rx=\"1\"/></g><g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"28\" y=\"26\" width=\"44\" height=\"58\" rx=\"2\"/><path d=\"M28 40h44M28 54h44M28 68h44\"/><path d=\"M44 84v-8a6 6 0 0 1 12 0v8\"/><path d=\"M14 84h72\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M54 14c3-3.5 6.5-3.5 9 0 2.5-3.5 6-3.5 9 0\"/></g>", "p": "<g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"28\" y=\"26\" width=\"44\" height=\"58\" rx=\"2\"/><path d=\"M28 40h44M28 54h44M28 68h44\"/><path d=\"M44 84v-8a6 6 0 0 1 12 0v8\"/><path d=\"M14 84h72\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"3.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M54 14c3-3.5 6.5-3.5 9 0 2.5-3.5 6-3.5 9 0\"/></g>"}, "Produto": {"g": "<g fill=\"#f6dcc7\" fill-opacity=\".55\"><path d=\"M22 36l32-13 32 13-32 13z\"/></g><g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M18 34l32-13 32 13v38L50 85 18 72z\"/><path d=\"M18 34l32 13 32-13M50 47v38\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M34 27.5l32 13\"/></g>", "p": "<g fill=\"none\" stroke=\"#393b36\" stroke-opacity=\".78\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M18 34l32-13 32 13v38L50 85 18 72z\"/><path d=\"M18 34l32 13 32-13M50 47v38\"/></g><g fill=\"none\" stroke=\"#aa5f38\" stroke-width=\"3.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M34 27.5l32 13\"/></g>"}};
+const ICONE_PADRAO=["Empresa","Gestao","Arquivo","Entregas","Produto"];
+const sem=t=>String(t||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+function icone(nome,cls,pequeno){const w=document.createElement("span");w.className="ico "+cls;w.setAttribute("aria-hidden","true");const d=ICONES[nome];w.innerHTML='<svg viewBox="0 0 100 100">'+(d?(pequeno?d.p:d.g):"")+'</svg>';return w}
+function iconeDaGuia(nome,i){const t=sem(nome);
+  if(/rotina|dia a dia|manha|abertura|reuniao|agenda/.test(t))return"Escritorio-Maressa";
+  if(/venda|atend|lead|comercial/.test(t))return"Comercial";
+  if(/cria|conteud|marketing|design/.test(t))return"Atelie";
+  if(/financ|caixa|cobranc|fiscal/.test(t))return"Administrativo";
+  if(/estud|curso|aprend|leitur/.test(t))return"Educacao";
+  return ICONE_PADRAO[i%ICONE_PADRAO.length]}
+function iconeDoGrupo(nome){const t=sem(nome);
+  if(/nota|fiscal|imposto|contab/.test(t))return"Administrativo";
+  if(/contrato|orcament|proposta/.test(t))return"Arquivo";
+  if(/cadastro|cliente/.test(t))return"Clientes";
+  if(/planilha|controle/.test(t))return"Empresa";
+  if(/campanha|funil|venda/.test(t))return"Comercial";
+  if(/dia a dia|rotina/.test(t))return"Escritorio-Maressa";
+  if(/refer|manual|script|estud/.test(t))return"Educacao";
+  return null}
 const ATALHOS=[
- {t:"Agenda de hoje",s:"Google Agenda",u:"https://calendar.google.com/calendar/r/day?authuser="+ME},
- {t:"Prédio Révem",s:"O seu sistema · o dia, as salas e a caixa de entrada",u:"https://claude.ai/artifact/DtTk2yy6tJmN5LS3QA6CX1"},
- {t:"Eve",s:"Pergunte ou anote · sua assistente",u:"https://claude.ai/artifact/MUw5oAWkbKBeDSHcUCCc4U"},
+ {ic:"Escritorio-Maressa",t:"Agenda de hoje",s:"Google Agenda",u:"https://calendar.google.com/calendar/r/day?authuser="+ME},
+ {ic:"Predio",t:"Prédio Révem",s:"O seu sistema · o dia, as salas e a caixa de entrada",u:"https://claude.ai/artifact/DtTk2yy6tJmN5LS3QA6CX1"},
+ {ic:"Eve",t:"Eve",s:"Pergunte ou anote · sua assistente",u:"https://claude.ai/artifact/MUw5oAWkbKBeDSHcUCCc4U"},
  {spotify:true,t:"Trilha do dia",s:"Spotify · tocar a playlist",u:SP_URL}
 ];
 
@@ -408,7 +635,7 @@ const now=new Date(),h=now.getHours();
 function saudar(){
   const hh=new Date().getHours(),g=hh<12?"Bom dia":hh<18?"Boa tarde":"Boa noite";
   const nome=String(store("mesa.nome")||"").trim();
-  const h1=$("#hello");h1.replaceChildren(document.createTextNode(nome?g+", "+nome:g));
+  const h1=$("#hello"),pp=g.split(" ");h1.replaceChildren(document.createTextNode(pp[0]+" "),el("em",{text:pp[1]}),document.createTextNode(nome?", "+nome:""));
   const b=el("button",{type:"button",class:"nome-btn",title:nome?"Mudar o nome":"Escrever o seu nome","aria-label":nome?"Mudar o nome":"Escrever o seu nome",text:nome?"✎":"+ seu nome"});
   b.onclick=()=>{const n=prompt("Como você quer ser chamado(a) na Mesa?",nome);if(n===null)return;store("mesa.nome",n.trim().slice(0,40));saudar()};
   h1.append(b);
@@ -429,7 +656,7 @@ ATALHOS.forEach(a=>{
       if(j.title)sub.textContent="Spotify · "+j.title;
     }).catch(()=>{});
   }else sub=el("small",{text:a.s});
-  kids.push(el("span",{},[el("strong",{text:a.t}),sub]),el("span",{class:"seta",text:a.spotify?"▶":"→"}));
+  if(!a.spotify&&a.ic)kids.push(icone(a.ic,"ic-atalho",true));kids.push(el("span",{},[el("strong",{text:a.t,class:a.t==="Eve"?"eve-nome":""}),sub]),el("span",{class:"seta",text:a.spotify?"▶":"→"}));
   $("#atalhos").append(el("a",{href:a.u,target:"_blank",rel:"noopener",class:"atalho"},kids));
 });
 
@@ -447,14 +674,14 @@ function detalhe(painel,chave,item,abrir){
 
 /* guias: botão grande = abrir tudo. A lista embutida acima funciona sozinha; se SHEET_CSV estiver preenchido, a planilha manda. */
 const SHEET_CSV="https://docs.google.com/spreadsheets/d/e/2PACX-1vRlPGo45MMaqhajmK41UMGTJwHqzj2MFvBUj5RiVMkM-ueNgkOOGk23Xe4tExqAy163fmvwthvxR_nv/pub?gid=173541380&single=true&output=csv";   /* planilha "Mesa Révem · Links", publicada como CSV */
-const COR=["#e4dccb","#e6c8b6","#d5e3ec","#cfcdc4","#dcd2c0"];
+const COR=["#f6e0cf","#f4d6cf","#f4ecd0","#dbe9d0","#eadcc3"];
 function renderModes(lista){
   $("#modes").replaceChildren();const dm=$("#det-modo");dm.hidden=true;dm.dataset.aberto="";
   lista.forEach((m,i)=>{
     const main=el("button",{class:"tile-main",type:"button","aria-label":"Abrir tudo de "+m.name},[
-      el("span",{class:"n",text:"Nº "+String(i+1).padStart(2,"0")}),
+      el("span",{class:"n",text:"Nº "+String(i+1).padStart(2,"0")}),icone(iconeDaGuia(m.name,i),"ic-tile"),
       el("strong",{text:m.name}),el("small",{text:m.tag||""}),
-      el("span",{class:"go"},["Abrir tudo ",el("b",{text:"→"})," · "+m.links.length+" abas"])]);
+      el("span",{class:"go"},["Abrir tudo ",el("b",{text:"→"}),el("span",{class:"cnt",text:m.links.length+" abas"})])]);
     main.onclick=()=>abrirTudo(m.links);
     const ver=el("button",{class:"tile-links",type:"button",text:"ver links"});
     ver.onclick=()=>detalhe("#det-modo","m"+i,m,()=>abrirTudo(m.links));
@@ -646,7 +873,7 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
    Cada cliente tem ÁREAS (ex.: "Dia a dia", "Nota fiscal"); cada área tem seus links. */
 (function(){
   const MODELO=["Drive","Agenda","Notion","Trello","Gmail"];
-  const CORES=["#e6c8b6","#d5e3ec","#e4dccb","#dcd2c0","#cfcdc4"];
+  const CORES=["#f4d6cf","#f4ecd0","#f6e0cf","#eadcc3","#dbe9d0"];
   const DIAS=["dom","seg","ter","qua","qui","sex","sáb"];
   const novoId=()=>"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
   function normaliza(c){
@@ -700,13 +927,13 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
     $("#cli-eyebrow").textContent="Mesa da cliente · "+d;
     const img=$("#cfoto-img"),vz=$("#cfoto-vazio"),ac=$("#cfoto-acoes");
     if(!c){
-      $("#cli-nome").textContent="Quem é a cliente deste perfil?";
+      $("#cli-nome").replaceChildren(document.createTextNode("Quem é a "),el("em",{text:"cliente"}),document.createTextNode(" deste perfil?"));
       $("#cli-abrir").hidden=true;$("#cli-slack").hidden=true;$("#cli-editar").textContent="Criar a cliente deste perfil";
       img.hidden=true;vz.hidden=false;vz.textContent="+";ac.hidden=true;
       window.tituloBase="Mesa Révem";
       return;
     }
-    $("#cli-nome").textContent=c.name;
+    {const pal=c.name.trim().split(/\s+/);const ult=pal.pop();$("#cli-nome").replaceChildren(document.createTextNode(pal.length?pal.join(" ")+" ":""),el("em",{text:ult}))};
     $("#cli-abrir").hidden=false;$("#cli-slack").hidden=!c.slack;$("#cli-editar").textContent="Editar";
     window.tituloBase="Mesa · "+c.name;if(!window.mesaOcupada)document.title=window.tituloBase;
     if(c.foto){img.src=c.foto;img.hidden=false;vz.hidden=true;ac.hidden=false}
@@ -716,7 +943,7 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
       a.links.forEach(l=>grid.append(el("a",{href:l.u,target:"_blank",rel:"noopener",class:"atalho"},[
         el("span",{},[el("strong",{text:(l.s?"★ ":"")+l.n}),el("small",{text:hostDe(l.u)})]),el("span",{class:"seta",text:"→"})])));
       if(!a.links.length)grid.append(el("p",{class:"small",text:"Sem links neste grupo ainda."}));
-      const cab=[el("p",{class:"label",text:a.n})];
+      const icG=iconeDoGrupo(a.n);const cab=(icG?[icone(icG,"ic-area",true)]:[]).concat([el("p",{class:"label",text:a.n})]);
       if(a.links.length){const ab=el("button",{type:"button",class:"btn sec peq",text:"Abrir tudo"});ab.onclick=()=>abrirArea(a);cab.push(ab)}
       box.append(el("div",{class:"area"},[el("div",{class:"area-cab"},cab),grid]));
     });
