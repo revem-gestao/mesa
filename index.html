@@ -120,7 +120,7 @@ header{display:flex;align-items:center;justify-content:space-between;gap:16px;fl
 .detalhe .btn{align-self:flex-start}
 
 /* 4. hoje: intenções + ritmo, compactos */
-.hoje{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:22px;align-items:start}
+.hoje{display:grid;grid-template-columns:minmax(0,820px);gap:22px;align-items:start}
 .box{background:var(--papel);border:1px solid var(--linha-forte);padding:14px 18px;display:flex;flex-direction:column;gap:12px}
 .intent{display:grid;grid-template-columns:34px 1fr 24px;gap:8px;align-items:center;border-bottom:1px solid var(--linha);padding:4px 0}
 .intent:last-of-type{border-bottom:0}
@@ -135,24 +135,6 @@ header{display:flex;align-items:center;justify-content:space-between;gap:16px;fl
 .intent.done input[type=text]{text-decoration:line-through;text-decoration-color:var(--terracota);color:var(--cinza)}
 .fim{margin:0;font-family:var(--serif);font-style:italic;font-size:20px;color:var(--terracota)}
 .fim[hidden]{display:none}
-.p-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.modes{display:flex;gap:6px;flex-wrap:wrap}
-.pill{border:1px solid var(--linha-forte);background:transparent;padding:4px 12px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:500}
-.pill[aria-pressed=true]{background:var(--grafite);color:var(--areia);border-color:var(--grafite)}
-.dots{display:flex;gap:6px}
-.dots i{width:9px;height:9px;border-radius:50%;border:1px solid var(--terracota);display:block}
-.dots i.on{background:var(--terracota)}
-.p-mid{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.clock{font-family:var(--serif);font-size:56px;line-height:1;font-weight:500;font-variant-numeric:tabular-nums;min-width:3.2ch}
-.clock.pausa{color:var(--terracota)}
-.p-btns{display:flex;gap:8px}
-.presets{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.num-in{width:46px;border:0;border-bottom:1px solid var(--grafite);background:transparent;text-align:center;padding:2px}
-.num-in:focus{outline:none;border-bottom-color:var(--terracota)}
-.agua{flex-direction:row;align-items:center;flex-wrap:wrap;gap:10px 16px}
-.glasses{display:flex;gap:5px}
-.glasses i{--f:0%;width:14px;height:22px;border:1px solid var(--grafite);border-radius:2px 2px 6px 6px;display:block;background:linear-gradient(to top,var(--gelo) var(--f),transparent var(--f))}
-.glasses i.on{--f:100%}
 
 footer{display:flex;flex-wrap:wrap;gap:10px 24px;align-items:center;justify-content:space-between;border-top:1px solid var(--linha-forte);padding-top:16px;color:var(--cinza);font-size:13px;font-weight:300}
 footer p{margin:0;max-width:64ch}
@@ -247,7 +229,6 @@ footer p{margin:0;max-width:64ch}
 @media (max-width:640px){.ed-lk{grid-template-columns:1fr 28px auto}.ed-lk input:nth-child(2){grid-column:1/-1;order:5}.rot-row{grid-template-columns:1fr auto}}
 .ed-slack{border:0;border-bottom:1px solid var(--linha-forte);background:transparent;padding:6px 2px;width:100%;min-width:0}
 .ed-slack:focus{outline:none;border-bottom-color:var(--terracota)}
-.hoje.so-ritmo{grid-template-columns:minmax(0,820px)}
 
 /* ===== visual do Prédio Révem (prévia) ===== */
 html,body{background:var(--bg)}
@@ -273,7 +254,6 @@ a{color:var(--terra-deep)}
 .detalhe h3{font-family:var(--display);font-weight:500;font-size:22px}
 .ed-nome{font-family:var(--display);font-style:italic;font-weight:400;font-size:24px}
 .ed-area-nome{font-family:var(--display);font-weight:500;font-size:19px}
-.clock{font-family:var(--display);font-weight:500;font-size:clamp(42px,6vw,54px)}
 .num,.nome-rot{font-family:var(--display)}
 .num{font-size:20px}
 .nome-rot,.intent input[type=text]{font-size:17px}
@@ -281,7 +261,6 @@ a{color:var(--terra-deep)}
 .fim{font-family:var(--display);font-size:19px}
 .tile .n{font-family:var(--hand);font-size:17px;letter-spacing:0;font-weight:500;text-transform:none;opacity:.8}
 .tile .go{letter-spacing:.12em;font-weight:600}
-#aguaTxt{font-family:var(--hand);font-size:19px;color:var(--ink)}
 .rot-titulo{font-family:var(--hand);font-size:19px;color:var(--terra-deep)}
 /* botões em pílula */
 .btn{border-radius:999px;padding:8px 16px;font-size:13px;font-weight:500;letter-spacing:0;text-transform:none;border:1px solid var(--terra);background:var(--terra);color:var(--bg)}
@@ -291,9 +270,9 @@ a{color:var(--terra-deep)}
 .btn.peq{padding:5px 12px;font-size:12px}
 .ghost{border-radius:999px;border:1px solid var(--terra);color:var(--terra-deep);padding:7px 14px;font-size:13px;font-weight:500;letter-spacing:0;text-transform:none}
 .ghost:hover{background:var(--terra);color:var(--bg)}
-.pill,.dia{border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--muted);font-size:12px;letter-spacing:0;text-transform:none;font-weight:500;padding:5px 12px}
-.pill:hover,.dia:hover{border-color:var(--terra);color:var(--terra-deep)}
-.pill[aria-pressed=true],.dia[aria-pressed=true]{background:var(--terra);color:var(--bg);border-color:var(--terra)}
+.dia{border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--muted);font-size:12px;letter-spacing:0;text-transform:none;font-weight:500;padding:5px 12px}
+.dia:hover{border-color:var(--terra);color:var(--terra-deep)}
+.dia[aria-pressed=true]{background:var(--terra);color:var(--bg);border-color:var(--terra)}
 .link{color:var(--terra-deep)}
 /* cartões */
 .tile{border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 18px -12px var(--shadow)}
@@ -316,7 +295,6 @@ a{color:var(--terra-deep)}
 .foto-vazio{border-radius:8px}
 .toast{background:var(--peach);border:1px solid var(--terra);color:var(--ink);border-radius:10px}
 .check{border-color:var(--ink)}
-.glasses i{border-color:var(--ink)}
 
 /* ===== opção C: cartões neutros, cor só numa faixa no topo ===== */
 .tile{background:var(--card);overflow:hidden}
@@ -378,9 +356,9 @@ a{color:var(--destaque)}
 .btn:hover{background:transparent;color:var(--destaque);border-color:var(--destaque)}
 .btn.sec,.ghost{background:transparent;color:var(--destaque);border:1px solid var(--destaque);border-radius:999px;font-size:13px;font-weight:500;letter-spacing:0;text-transform:none}
 .btn.sec:hover,.ghost:hover{background:var(--pessego);color:var(--destaque)}
-.pill,.dia{border-radius:999px;border:1px solid var(--linha);background:var(--papel);color:var(--cinza);font-size:12px;font-weight:500;letter-spacing:0;text-transform:none;padding:5px 12px}
-.pill:hover,.dia:hover{border-color:var(--destaque);color:var(--destaque)}
-.pill[aria-pressed=true],.dia[aria-pressed=true]{background:var(--pessego);border-color:var(--destaque);color:var(--destaque)}
+.dia{border-radius:999px;border:1px solid var(--linha);background:var(--papel);color:var(--cinza);font-size:12px;font-weight:500;letter-spacing:0;text-transform:none;padding:5px 12px}
+.dia:hover{border-color:var(--destaque);color:var(--destaque)}
+.dia[aria-pressed=true]{background:var(--pessego);border-color:var(--destaque);color:var(--destaque)}
 /* cartões: borda, nunca sombra; canto de 6px */
 .tile{background:var(--papel);border:1px solid var(--linha);border-radius:6px;box-shadow:none;overflow:visible}
 .tile::before{display:none}
@@ -429,26 +407,31 @@ a{color:var(--destaque)}
 .moldura-foto .foto-vazio.inicial{font-family:var(--body);font-style:normal;font-weight:300;color:var(--destaque)}
 .retrato{padding-top:var(--space-1)}
 /* ritmo do dia, intenções, aviso: sem letra de mão */
-.clock{font-family:var(--body);font-weight:300;font-size:clamp(42px,6vw,54px);letter-spacing:-.02em}
 .num{font-family:var(--body);font-style:normal;font-weight:300;font-size:16px;color:var(--destaque)}
 .nome-rot,.intent input[type=text]{font-family:var(--body);font-size:15px;font-weight:400}
 .intent input[type=text]::placeholder{font-style:normal;color:rgba(57,59,54,.5)}
 .fim{font-family:var(--body);font-size:15px;font-style:normal;color:var(--destaque)}
-#aguaTxt{font-family:var(--body);font-size:13px;color:var(--cinza)}
 .rot-titulo{font-family:var(--body);font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--destaque)}
 .check{border-color:var(--cinza)}
 .check::after{background:var(--destaque)}
 .check:checked{border-color:var(--destaque)}
-.dots i{border-color:var(--destaque)}
-.dots i.on{background:var(--destaque)}
-.glasses i{border-color:var(--cinza);background:linear-gradient(to top,var(--pessego) var(--f),transparent var(--f))}
 .toast{background:var(--pessego);border:1px solid var(--linha);color:var(--grafite);border-radius:10px}
 footer{border-top:1px solid var(--linha)}
 .star,.x{color:var(--destaque)}
 .nome-btn{color:var(--destaque);font-weight:500;letter-spacing:.2em}
 .mv button{color:var(--cinza)}
 .mv button:hover{color:var(--destaque)}
-</style>
+
+/* ===== topo compacto: guias e clientes à vista na primeira tela ===== */
+.wrap{gap:var(--space-3)}
+#sec-guias,#sec-cli{margin-top:var(--space-3)}
+.moldura-foto{width:196px;padding:10px 10px 34px}
+.moldura-foto::before{width:72px;height:19px;margin-left:-36px;top:-9px}
+.hero{padding:0;gap:16px 40px}
+.q-text{height:56px}
+.tile-main{padding:20px var(--space-3) 28px;min-height:132px}
+.ic-tile{top:20px;right:var(--space-3)}
+.ic-eve{display:block;border-radius:8px;object-fit:cover;width:42px;height:42px}</style>
 </head>
 <body>
 <div class="wrap">
@@ -505,48 +488,15 @@ footer{border-top:1px solid var(--linha)}
 
   <div class="detalhe editor" id="ed-cli" hidden></div>
 
-  <section class="hoje so-ritmo" id="sec-hoje" aria-label="Hoje">
+  <section class="hoje" id="sec-hoje" aria-label="Hoje" hidden>
     <div id="col-int" hidden>
       <h2 class="sec-h">Intenções de <em>hoje</em></h2>
       <div class="box" id="intents"></div>
     </div>
-    <div>
-      <h2 class="sec-h">Ritmo do <em>dia</em></h2>
-      <div style="display:flex;flex-direction:column;gap:12px">
-        <div class="box" id="pomo">
-          <div class="p-top">
-            <div class="modes" id="pm">
-              <button class="pill" type="button" data-m="foco" aria-pressed="true">Foco</button>
-              <button class="pill" type="button" data-m="pausa" aria-pressed="false">Pausa</button>
-              <button class="pill" type="button" data-m="longa" aria-pressed="false">Pausa longa</button>
-            </div>
-            <div class="dots" id="dots" aria-label="Ciclos de foco de hoje"><i></i><i></i><i></i><i></i></div>
-          </div>
-          <div class="p-mid">
-            <div class="clock" id="clock" role="timer" aria-live="off">25:00</div>
-            <div class="p-btns"><button class="btn" type="button" id="go">Iniciar</button><button class="btn sec" type="button" id="reset">Zerar</button></div>
-          </div>
-          <div class="presets small" id="presets">Foco de hoje:
-            <button class="pill" type="button" data-min="25">25</button><button class="pill" type="button" data-min="50">50</button>
-            <button class="pill" type="button" data-min="90">90</button><button class="pill" type="button" data-min="120">2 h</button>
-            · ou <input class="num-in" id="m-foco" type="number" min="1" max="480" value="25" aria-label="Minutos de foco"> min
-            · pausa <input class="num-in" id="m-pausa" type="number" min="1" max="60" value="5" aria-label="Minutos de pausa">
-            · longa <input class="num-in" id="m-longa" type="number" min="1" max="60" value="15" aria-label="Minutos de pausa longa">
-          </div>
-        </div>
-        <div class="box agua" id="agua">
-          <div class="glasses" id="glasses" aria-hidden="true"></div>
-          <span class="small" id="aguaTxt">0 de 8 copos</span>
-          <button class="btn sec" type="button" id="bebi">Bebi um copo</button>
-          <label class="small"><input type="checkbox" id="aguaOn"> lembrar a cada
-            <input class="num-in" id="aguaMin" type="number" min="10" max="180" value="50" aria-label="Minutos entre lembretes"> min</label>
-        </div>
-      </div>
-    </div>
   </section>
 
   <footer>
-    <p>Esta página guarda só links, nunca senhas. Se "Abrir tudo" abrir só uma aba, libere pop-ups para este site no Chrome. Cronômetro, água e música funcionam com esta aba aberta (fixe a aba).</p>
+    <p>Esta página guarda só links, nunca senhas. Se "Abrir tudo" abrir só uma aba, libere pop-ups para este site no Chrome. A música toca com esta aba aberta (fixe a aba).</p>
     <label class="small modo"><input type="checkbox" id="modo-cli"> Este perfil é a Mesa de uma cliente (esconde o que é pessoal)</label>
     <a class="ghost" href="https://docs.google.com/spreadsheets/d/1Ei9Fi3dOQBsdPhO2PPP_qkusf_cSBkk6OJme0QzeAmA/edit" target="_blank" rel="noopener" id="edit">Editar meus links</a>
   </footer>
@@ -615,7 +565,7 @@ function iconeDoGrupo(nome){const t=sem(nome);
   return null}
 const ATALHOS=[
  {ic:"Escritorio-Maressa",t:"Agenda de hoje",s:"Google Agenda",u:"https://calendar.google.com/calendar/r/day?authuser="+ME},
- {ic:"Predio",t:"Prédio Révem",s:"O seu sistema · o dia, as salas e a caixa de entrada",u:"https://claude.ai/artifact/DtTk2yy6tJmN5LS3QA6CX1"},
+ {ic:"Predio",t:"Sede Révem",s:"O seu sistema · o dia, as salas e a caixa de entrada",u:"https://claude.ai/artifact/DtTk2yy6tJmN5LS3QA6CX1"},
  {ic:"Eve",t:"Eve",s:"Pergunte ou anote · sua assistente",u:"https://claude.ai/artifact/MUw5oAWkbKBeDSHcUCCc4U"},
  {spotify:true,t:"Trilha do dia",s:"Spotify · tocar a playlist",u:SP_URL}
 ];
@@ -656,7 +606,7 @@ ATALHOS.forEach(a=>{
       if(j.title)sub.textContent="Spotify · "+j.title;
     }).catch(()=>{});
   }else sub=el("small",{text:a.s});
-  if(!a.spotify&&a.ic)kids.push(icone(a.ic,"ic-atalho",true));kids.push(el("span",{},[el("strong",{text:a.t,class:a.t==="Eve"?"eve-nome":""}),sub]),el("span",{class:"seta",text:a.spotify?"▶":"→"}));
+  if(!a.spotify&&a.ic){if(a.ic==="Eve"){const im=document.createElement("img");im.className="ic-atalho ic-eve";im.alt="";im.setAttribute("aria-hidden","true");im.src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiI+PHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMTIiIGZpbGw9IiNmMWVlZTgiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0MCAzNCkgc2NhbGUoMi4xNikiPjxzdmcgeD0iMCIgeT0iMCIgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMTAiIHZpZXdCb3g9IjAgMTIgMjAwIDIxMCI+PGNpcmNsZSBmaWxsPSIjZjZkY2M3IiBmaWxsLW9wYWNpdHk9Ii41NSIgY3g9IjExMCIgY3k9Ijk2IiByPSI2MCIvPgo8cGF0aCBmaWxsPSIjZjhmNWVmIiBkPSJNMTEyIDEzMiBDIDExOCAxMjAsIDE0MCAxMjAsIDE0MiAxMzQgQyAxNDMgMTQ2LCAxMjYgMTUwLCAxMTYgMTQ0IFoiLz48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiMzOTNiMzYiIHN0cm9rZS1vcGFjaXR5PSIuODUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBkPSJNMTE0IDEyOCBDIDEyMiAxMTgsIDE0MSAxMjIsIDE0MiAxMzQgQyAxNDMgMTQ2LCAxMjYgMTUwLCAxMTYgMTQ0Ii8+PHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzkzYjM2IiBzdHJva2Utb3BhY2l0eT0iLjg1IiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBkPSJNMTI0IDEyNiBxOSAyIDEzIDkgTTEyMSAxMzcgcTggNCAxNSAxIi8+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzM5M2IzNiIgc3Ryb2tlLW9wYWNpdHk9Ii44NSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGQ9Ik0yNCAyMjIgQyAzMCAxODYsIDU4IDE3MCwgMTAwIDE2OCBDIDE0MiAxNzAsIDE3MCAxODYsIDE3NiAyMjIiLz4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzkzYjM2IiBzdHJva2Utb3BhY2l0eT0iLjg1IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZD0iTTg5IDE0MCBMODggMTY4IE0xMTEgMTQwIEwxMTIgMTY4Ii8+CjxwYXRoIGZpbGw9IiNmOGY1ZWYiIGQ9Ik04NSAxNjggTDEwMCAxOTIgTDExNSAxNjggWiIvPjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzM5M2IzNiIgc3Ryb2tlLW9wYWNpdHk9Ii44NSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGQ9Ik04NCAxNjggTDEwMCAxOTIgTDExNiAxNjgiLz4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzkzYjM2IiBzdHJva2Utb3BhY2l0eT0iLjg1IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZD0iTTY2IDE3OCBDIDc2IDE5MiwgODQgMjA2LCA5MCAyMjIgTTEzNCAxNzggQyAxMjQgMTkyLCAxMTYgMjA2LCAxMTAgMjIyIi8+CjxwYXRoIGZpbGw9IiNmOGY1ZWYiIGQ9Ik03MSA5NiBDIDcwIDEyNiwgODUgMTQ0LCAxMDAgMTQ0IEMgMTE1IDE0NCwgMTMwIDEyNiwgMTI5IDk2IEMgMTI5IDc0LCAxMTYgNjIsIDEwMCA2MiBDIDg0IDYyLCA3MSA3NCwgNzEgOTYgWiIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiMzOTNiMzYiIHN0cm9rZS1vcGFjaXR5PSIuODUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBkPSJNNzEgOTggQyA3MSAxMjYsIDg2IDE0NCwgMTAwIDE0NCBDIDExNCAxNDQsIDEyOSAxMjYsIDEyOSA5OCIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiMzOTNiMzYiIHN0cm9rZS1vcGFjaXR5PSIuODUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBkPSJNNjkgMTA2IEMgNjMgNzYsIDgwIDU2LCAxMDIgNTYgQyAxMjQgNTYsIDEzOSA3NCwgMTMxIDEwNiIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiMzOTNiMzYiIHN0cm9rZS1vcGFjaXR5PSIuODUiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGQ9Ik0xMDQgNTcgQyA5NCA2NiwgODIgNzQsIDcyIDkyIE0xMDQgNTcgQyAxMTQgNjYsIDEyNCA3NCwgMTI5IDg4IE05OCA1OCBDIDkwIDcwLCA4MCA4MCwgNzYgOTgiLz4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzkzYjM2IiBzdHJva2Utb3BhY2l0eT0iLjg1IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZD0iTTcwIDEwNiBxIC01IDYgMCAxMyBNMTMwIDEwNiBxIDUgNiAwIDEzIi8+CjxjaXJjbGUgZmlsbD0iI2FhNWYzOCIgb3BhY2l0eT0iLjEyIiBjeD0iODUiIGN5PSIxMjAiIHI9IjYiLz48Y2lyY2xlIGZpbGw9IiNhYTVmMzgiIG9wYWNpdHk9Ii4xMiIgY3g9IjExNSIgY3k9IjEyMCIgcj0iNiIvPgo8ZyA+PHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzkzYjM2IiBzdHJva2Utb3BhY2l0eT0iLjg1IiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBkPSJNODQgOTMgcTcgLTQgMTMgMCIvPjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzM5M2IzNiIgc3Ryb2tlLW9wYWNpdHk9Ii44NSIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZD0iTTEwMyA5MyBxNyAtNCAxMyAwIi8+PC9nPgo8ZyA+PHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzkzYjM2IiBzdHJva2Utb3BhY2l0eT0iLjg1IiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBkPSJNODUgMTAxIHE1IC0zLjUgMTAgMCBNMTA1IDEwMSBxNSAtMy41IDEwIDAiLz4KPGcgPjxnID48Y2lyY2xlIGZpbGw9IiMzOTNiMzYiIGN4PSI5MCIgY3k9IjEwMy41IiByPSIyLjciLz48Y2lyY2xlIGZpbGw9IiMzOTNiMzYiIGN4PSIxMTAiIGN5PSIxMDMuNSIgcj0iMi43Ii8+PC9nPjwvZz48L2c+CjxnIG9wYWNpdHk9IjAiPjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzM5M2IzNiIgc3Ryb2tlLW9wYWNpdHk9Ii44NSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGQ9Ik04NSAxMDMgcTUgNSAxMCAwIE0xMDUgMTAzIHE1IDUgMTAgMCIvPjwvZz4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzkzYjM2IiBzdHJva2Utb3BhY2l0eT0iLjg1IiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBkPSJNMTAwIDEwNiBxIC0zIDcgMSAxMCIvPgo8ZyA+PHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzkzYjM2IiBzdHJva2Utb3BhY2l0eT0iLjg1IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgZD0iTTkzIDEyNiBxNyAzIDE0IDAiLz48cGF0aCBvcGFjaXR5PSIwIiAgZD0iTTkwIDEyNCBxMTAgOSAyMCAwIi8+PGVsbGlwc2Ugb3BhY2l0eT0iMCIgIGN4PSIxMDAiIGN5PSIxMjciIHJ4PSIzIiByeT0iMy40Ii8+PC9nPgo8ZyBmaWxsPSJub25lIiBzdHJva2U9IiNhYTVmMzgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0xMTYgMTk5IEMgMTE4IDE5MiwgMTI2IDE4OCwgMTMzIDE5MSBDIDEzNiAxODksIDEzOSAxODksIDE0MSAxOTEgTCAxNDYgMTkxIEwgMTQxIDE5NCBDIDE0MCAxOTksIDEzMyAyMDMsIDEyNSAyMDIgTCAxMTggMjA2IEwgMTIwIDIwMCBaIi8+PHBhdGggZD0iTTEzNyAxOTEuNiBhMS40IDEuNCAwIDAgMCAyLjYgMCIvPjxwYXRoIGQ9Ik0xMjQgMTk2IHE1IDMgMTAgMCIvPjwvZz4KPC9zdmc+PC9nPjwvc3ZnPg==";kids.push(im)}else kids.push(icone(a.ic,"ic-atalho",true))}kids.push(el("span",{},[el("strong",{text:a.t,class:a.t==="Eve"?"eve-nome":""}),sub]),el("span",{class:"seta",text:a.spotify?"▶":"→"}));
   $("#atalhos").append(el("a",{href:a.u,target:"_blank",rel:"noopener",class:"atalho"},kids));
 });
 
@@ -740,7 +690,7 @@ $("#intents").append(fim);checaFim();
   const t=$("#q-text"),a=$("#q-by"),box=$("#bank");
   const nota=()=>banco.find(x=>x.d===hoje);
   const br=d=>d.split("-").reverse().join("/");
-  const ajustar=()=>{if(!t.value){t.style.height="";return}t.style.height="auto";t.style.height=Math.min(Math.max(t.scrollHeight,96),150)+"px"};
+  const ajustar=()=>{if(!t.value){t.style.height="";return}t.style.height="auto";t.style.height=Math.min(Math.max(t.scrollHeight,56),150)+"px"};
   const contar=()=>{$("#q-n").textContent=banco.length};
   const salvar=()=>store("mesa.frases",banco);
   const h0=nota();if(h0){t.value=h0.t;a.value=h0.a||""}
@@ -801,73 +751,6 @@ $("#intents").append(fim);checaFim();
   inp.onchange=()=>ler(inp.files[0]);
   mostrar();
 })();
-
-/* ritmo: avisos e cronômetro (usa a hora real, então não atrasa se a aba ficar em segundo plano) */
-function bip(){try{const c=new (window.AudioContext||window.webkitAudioContext)();[660,880].forEach((f,i)=>{const o=c.createOscillator(),g=c.createGain();o.frequency.value=f;g.gain.value=.08;o.connect(g);g.connect(c.destination);o.start(c.currentTime+i*.22);o.stop(c.currentTime+i*.22+.18)})}catch(e){}}
-function avisar(txt){bip();try{if("Notification" in window&&Notification.permission==="granted")new Notification("Mesa Révem",{body:txt})}catch(e){}}
-function pedirAviso(){try{if("Notification" in window&&Notification.permission==="default")Notification.requestPermission()}catch(e){}}
-const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>String(n).padStart(2,"0");return h?h+":"+p(m)+":"+p(x):p(m)+":"+p(x)};
-
-(function(){
-  const CFG=Object.assign({foco:25,pausa:5,longa:15},store("mesa.pomo.cfg")||{});
-  const dia=store("mesa.pomo.dia");
-  let ciclos=dia&&dia.dia===hoje?dia.n:0,mode="foco",left=CFG.foco*60,endAt=null,timer=null;
-  const nomes={foco:"Foco",pausa:"Pausa",longa:"Pausa longa"};
-  function render(){
-    window.mesaOcupada=!!timer;
-    $("#clock").textContent=fmt(left);$("#clock").classList.toggle("pausa",mode!=="foco");
-    document.querySelectorAll("#pm .pill").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.m===mode)));
-    $("#go").textContent=timer?"Pausar":"Iniciar";
-    const n=ciclos>0&&ciclos%4===0?4:ciclos%4;
-    document.querySelectorAll("#dots i").forEach((d,i)=>d.classList.toggle("on",i<n));
-    document.title=timer?fmt(left)+" · "+nomes[mode]:(window.tituloBase||"Mesa Révem");
-  }
-  function parar(){clearInterval(timer);timer=null;endAt=null}
-  function setMode(m){parar();mode=m;left=CFG[m]*60;render()}
-  function fimCiclo(){
-    parar();
-    if(mode==="foco"){ciclos++;store("mesa.pomo.dia",{dia:hoje,n:ciclos});avisar("Foco concluído. Hora de uma pausa.");setMode(ciclos%4===0?"longa":"pausa")}
-    else{avisar("Pausa terminou. Vamos voltar ao foco?");setMode("foco")}
-  }
-  function tick(){left=Math.max(0,Math.round((endAt-Date.now())/1000));render();if(left===0)fimCiclo()}
-  $("#go").onclick=()=>{
-    if(timer){left=Math.max(0,Math.round((endAt-Date.now())/1000));parar();render();return}
-    pedirAviso();endAt=Date.now()+left*1000;timer=setInterval(tick,500);render();
-  };
-  $("#reset").onclick=()=>setMode(mode);
-  document.querySelectorAll("#pm .pill").forEach(b=>b.onclick=()=>setMode(b.dataset.m));
-  ["foco","pausa","longa"].forEach(k=>{
-    const i=$("#m-"+k);i.value=CFG[k];
-    i.onchange=()=>{const v=Math.min(Math.max(parseInt(i.value)||CFG[k],1),+i.max);i.value=v;CFG[k]=v;store("mesa.pomo.cfg",CFG);if(!timer&&mode===k)setMode(k)};
-  });
-  document.querySelectorAll("#presets .pill").forEach(b=>b.onclick=()=>{
-    const v=+b.dataset.min;CFG.foco=v;$("#m-foco").value=v;store("mesa.pomo.cfg",CFG);setMode("foco");
-  });
-  render();
-})();
-
-/* água */
-(function(){
-  const META=8;
-  let st=store("mesa.agua")||{};
-  if(st.dia!==hoje)st={dia:hoje,copos:0,on:!!st.on,min:st.min||50};
-  const salvar=()=>store("mesa.agua",st);
-  let proximo=null;
-  function render(){
-    const g=$("#glasses");g.replaceChildren();
-    for(let i=0;i<META;i++)g.append(el("i",{class:i<st.copos?"on":""}));
-    $("#aguaTxt").textContent=st.copos+" de "+META+" copos";
-    $("#aguaOn").checked=st.on;$("#aguaMin").value=st.min;
-  }
-  function agendar(){proximo=st.on?Date.now()+st.min*60000:null}
-  $("#bebi").onclick=()=>{st.copos++;salvar();agendar();render()};
-  $("#aguaOn").onchange=e=>{st.on=e.target.checked;if(st.on)pedirAviso();salvar();agendar()};
-  $("#aguaMin").onchange=e=>{st.min=Math.min(Math.max(parseInt(e.target.value)||50,10),180);salvar();agendar();render()};
-  setInterval(()=>{if(proximo&&Date.now()>=proximo){avisar("Hora de um copo d'água.");agendar()}},15000);
-  render();agendar();
-})();
-
-
 
 /* ---------- clientes: ficam só neste navegador (nunca no GitHub nem na planilha publicada) ----------
    Cada cliente tem ÁREAS (ex.: "Dia a dia", "Nota fiscal"); cada área tem seus links. */
@@ -935,7 +818,7 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
     }
     {const pal=c.name.trim().split(/\s+/);const ult=pal.pop();$("#cli-nome").replaceChildren(document.createTextNode(pal.length?pal.join(" ")+" ":""),el("em",{text:ult}))};
     $("#cli-abrir").hidden=false;$("#cli-slack").hidden=!c.slack;$("#cli-editar").textContent="Editar";
-    window.tituloBase="Mesa · "+c.name;if(!window.mesaOcupada)document.title=window.tituloBase;
+    window.tituloBase="Mesa · "+c.name;document.title=window.tituloBase;
     if(c.foto){img.src=c.foto;img.hidden=false;vz.hidden=true;ac.hidden=false}
     else{img.hidden=true;img.removeAttribute("src");vz.hidden=false;vz.textContent=(c.name[0]||"?").toUpperCase();ac.hidden=true}
     c.areas.forEach(a=>{
@@ -1197,20 +1080,20 @@ const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>Str
   /* ---------- modo "Mesa da cliente": mostra só o que é do trabalho para ela ---------- */
   const cb=$("#modo-cli");
   function aplicarModo(){
-    ["#atalhos","#sec-guias","#sec-cli",".hero","#agua","#edit"].forEach(sel=>{const e=document.querySelector(sel);if(e)e.hidden=modo});
+    ["#atalhos","#sec-guias","#sec-cli",".hero","#edit"].forEach(sel=>{const e=document.querySelector(sel);if(e)e.hidden=modo});
     $("#mesa-cli").hidden=!modo;cb.checked=modo;
-    $("#col-int").hidden=!modo;$("#sec-hoje").classList.toggle("so-ritmo",!modo);
+    $("#col-int").hidden=!modo;$("#sec-hoje").hidden=!modo;
     if(modo){$("#bank").hidden=true;renderMesaCli()}
-    else{window.tituloBase=null;if(!window.mesaOcupada)document.title="Mesa Révem"}
+    else{window.tituloBase=null;document.title="Mesa Révem"}
     rotinasNoFoco();
   }
   cb.onchange=()=>{modo=cb.checked;store("mesa.modoCliente",modo);aplicarModo()};
   aplicarModo();desenhar();
 })();
 
-/* virada de dia: se a aba ficou aberta e o dia mudou, recarrega (só quando o cronômetro está parado) */
+/* virada de dia: se a aba ficou aberta e o dia mudou, recarrega */
 const diaAtual=()=>new Date().toLocaleDateString("sv-SE");
-function conferirDia(){saudar();if(diaAtual()!==hoje&&!window.mesaOcupada)location.reload()}
+function conferirDia(){saudar();if(diaAtual()!==hoje)location.reload()}
 setInterval(conferirDia,60000);
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)conferirDia()});
 </script>
